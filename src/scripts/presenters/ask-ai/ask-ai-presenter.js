@@ -173,10 +173,16 @@ class AskAiPresenter {
   }
 
   showToast(message) {
+    // Get existing toasts to calculate position
+    const existingToasts = document.querySelectorAll('.toast');
+    const toastHeight = 50; // Approximate height including margin
+    const topOffset = 90 + (existingToasts.length * toastHeight);
+    
     // Create toast notification
     const toast = document.createElement('div');
     toast.className = 'toast';
     toast.textContent = message;
+    toast.style.top = `${topOffset}px`;
     
     document.body.appendChild(toast);
     
@@ -186,8 +192,25 @@ class AskAiPresenter {
     // Hide and remove toast
     setTimeout(() => {
       toast.classList.remove('show');
-      setTimeout(() => document.body.removeChild(toast), 300);
-    }, 3000);
+      setTimeout(() => {
+        if (document.body.contains(toast)) {
+          document.body.removeChild(toast);
+          // Reposition remaining toasts
+          this.repositionToasts();
+        }
+      }, 300);
+    }, 2000);
+  }
+
+  // Reposition remaining toasts after one is removed
+  repositionToasts() {
+    const toasts = document.querySelectorAll('.toast');
+    const toastHeight = 50;
+    
+    toasts.forEach((toast, index) => {
+      const newTop = 90 + (index * toastHeight);
+      toast.style.top = `${newTop}px`;
+    });
   }
 
   // Initialize Gemini service in background
@@ -201,7 +224,7 @@ class AskAiPresenter {
         
         // Show loading feedback to user
         if (retryCount === 0) {
-          this.showToast('🔄 Memuat Gemini AI...');
+          this.showToast('🔄 Memuat AI...');
         } else {
           this.showToast(`🔄 Mencoba ulang... (${retryCount + 1}/${maxRetries})`);
         }
@@ -209,16 +232,16 @@ class AskAiPresenter {
         const success = await this.model.initializeGemini();
         
         if (success) {
-          console.log('✅ Gemini service initialized successfully');
-          this.showToast('🤖 Gemini AI siap digunakan');
+          console.log('✅ AI service initialized successfully');
+          this.showToast('🤖 AI siap digunakan');
           
           // Test connection to ensure it's working
           const testResult = await this.model.testGeminiConnection();
           if (testResult.success) {
-            console.log('✅ Gemini connection test passed');
+            console.log('✅ connection test passed');
             return true;
           } else {
-            console.warn('⚠️ Gemini initialized but connection test failed');
+            console.warn('⚠️ AI initialized but connection test failed');
             throw new Error('Connection test failed: ' + testResult.error);
           }
         }
@@ -240,8 +263,8 @@ class AskAiPresenter {
       }
     }
     
-    console.warn('❌ Gemini service initialization failed after all retries');
-    this.showToast('⚠️ Gemini AI tidak tersedia, menggunakan mode fallback');
+    console.warn('❌ AI service initialization failed after all retries');
+    this.showToast('⚠️ AI tidak tersedia, menggunakan mode fallback');
     
     // Show diagnostic info
     this.showDiagnosticInfo();
@@ -266,7 +289,7 @@ class AskAiPresenter {
       } else if (!status.datasetStats || status.datasetStats.count === 0) {
         this.showToast('❌ Dataset hadits tidak dapat dimuat');
       } else {
-        this.showToast('❌ Koneksi ke Gemini API gagal');
+        this.showToast('❌ Koneksi ke AI gagal');
       }
       
     } catch (error) {
@@ -277,20 +300,20 @@ class AskAiPresenter {
   // Test Gemini connection
   async testGeminiConnection() {
     try {
-      this.showToast('🔄 Testing Gemini connection...');
+      this.showToast('🔄 Testing AI connection...');
       const result = await this.model.testGeminiConnection();
       
       if (result.success) {
-        this.showToast('✅ Gemini AI connection successful');
+        this.showToast('✅ AI connection successful');
         console.log('Gemini test response:', result.response);
       } else {
-        this.showToast('❌ Gemini AI connection failed');
-        console.error('Gemini test error:', result.error);
+        this.showToast('❌ AI connection failed');
+        console.error('AI test error:', result.error);
       }
       
       return result;
     } catch (error) {
-      this.showToast('❌ Error testing Gemini connection');
+      this.showToast('❌ Error testing AI connection');
       console.error('Test connection error:', error);
       return { success: false, error: error.message };
     }
@@ -300,10 +323,10 @@ class AskAiPresenter {
   async getGeminiStatus() {
     try {
       const status = await this.model.getGeminiStatus();
-      console.log('Gemini service status:', status);
+      console.log('AI service status:', status);
       return status;
     } catch (error) {
-      console.error('Error getting Gemini status:', error);
+      console.error('Error getting AI status:', error);
       return { error: error.message };
     }
   }
@@ -311,7 +334,7 @@ class AskAiPresenter {
   // Toggle Gemini usage
   toggleGeminiUsage(enabled) {
     this.model.toggleGemini(enabled);
-    this.showToast(`Gemini AI ${enabled ? 'diaktifkan' : 'dinonaktifkan'}`);
+    this.showToast(`AI ${enabled ? 'diaktifkan' : 'dinonaktifkan'}`);
   }
 }
 

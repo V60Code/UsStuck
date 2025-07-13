@@ -307,23 +307,33 @@ class AskAiView {
              /* Toast Notification Styles */
              .toast {
                position: fixed;
-               bottom: 20px;
-               left: 50%;
-               transform: translateX(-50%) translateY(100px);
+               top: 90px;
+               right: 5px;
+               transform: translateX(100px);
                background: #333;
                color: white;
-               padding: 12px 24px;
+               padding: 12px 20px;
                border-radius: 8px;
                font-size: 14px;
+               line-height: 1.4;
                z-index: 1000;
                opacity: 0;
                transition: all 0.3s ease;
-               box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+               box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+               max-width: 320px;
+               text-align: center;
+               white-space: nowrap;
+               overflow: hidden;
+               text-overflow: ellipsis;
+               height: auto;
+               min-height: 40px;
+               font-weight: 500;
+               margin-bottom: 10px;
              }
 
              .toast.show {
                opacity: 1;
-               transform: translateX(-50%) translateY(0);
+               transform: translateX(0);
              }
 
              /* Loading Animation */

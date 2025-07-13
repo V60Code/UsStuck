@@ -192,20 +192,85 @@ class AskAiPresenter {
 
   // Initialize Gemini service in background
   async initializeGeminiService() {
-    try {
-      console.log('Initializing Gemini service...');
-      const success = await this.model.initializeGemini();
-      
-      if (success) {
-        console.log('Gemini service initialized successfully');
-        this.showToast('🤖 Gemini AI siap digunakan');
-      } else {
-        console.warn('Gemini service initialization failed');
-        this.showToast('⚠️ Gemini AI tidak tersedia, menggunakan mode fallback');
+    const maxRetries = 3;
+    let retryCount = 0;
+    
+    while (retryCount < maxRetries) {
+      try {
+        console.log(`🔄 Initializing Gemini service... (attempt ${retryCount + 1}/${maxRetries})`);
+        
+        // Show loading feedback to user
+        if (retryCount === 0) {
+          this.showToast('🔄 Memuat Gemini AI...');
+        } else {
+          this.showToast(`🔄 Mencoba ulang... (${retryCount + 1}/${maxRetries})`);
+        }
+        
+        const success = await this.model.initializeGemini();
+        
+        if (success) {
+          console.log('✅ Gemini service initialized successfully');
+          this.showToast('🤖 Gemini AI siap digunakan');
+          
+          // Test connection to ensure it's working
+          const testResult = await this.model.testGeminiConnection();
+          if (testResult.success) {
+            console.log('✅ Gemini connection test passed');
+            return true;
+          } else {
+            console.warn('⚠️ Gemini initialized but connection test failed');
+            throw new Error('Connection test failed: ' + testResult.error);
+          }
+        }
+        
+        retryCount++;
+        if (retryCount < maxRetries) {
+          console.log(`⏳ Retrying in 2 seconds...`);
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+        
+      } catch (error) {
+        console.error(`❌ Initialization attempt ${retryCount + 1} failed:`, error);
+        retryCount++;
+        
+        if (retryCount < maxRetries) {
+          console.log(`⏳ Waiting 2 seconds before retry...`);
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
       }
+    }
+    
+    console.warn('❌ Gemini service initialization failed after all retries');
+    this.showToast('⚠️ Gemini AI tidak tersedia, menggunakan mode fallback');
+    
+    // Show diagnostic info
+    this.showDiagnosticInfo();
+    
+    return false;
+  }
+
+  // Show diagnostic information to help debug issues
+  async showDiagnosticInfo() {
+    try {
+      const status = await this.model.getGeminiStatus();
+      console.log('🔍 Diagnostic Info:', {
+        initialized: status.initialized,
+        hasApiKey: status.hasApiKey,
+        datasetStats: status.datasetStats,
+        timestamp: new Date().toISOString()
+      });
+      
+      // Show user-friendly diagnostic
+      if (!status.hasApiKey) {
+        this.showToast('❌ API Key tidak ditemukan');
+      } else if (!status.datasetStats || status.datasetStats.count === 0) {
+        this.showToast('❌ Dataset hadits tidak dapat dimuat');
+      } else {
+        this.showToast('❌ Koneksi ke Gemini API gagal');
+      }
+      
     } catch (error) {
-      console.error('Error initializing Gemini service:', error);
-      this.showToast('⚠️ Error loading Gemini AI');
+      console.error('Error getting diagnostic info:', error);
     }
   }
 

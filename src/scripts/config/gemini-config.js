@@ -1,18 +1,26 @@
+import CONFIG from '../config.js';
+
 // Konfigurasi Gemini API
 export const GEMINI_CONFIG = {
-  model: 'gemini-pro',
-  baseUrl: 'https://generativelanguage.googleapis.com/v1beta/models',
-  maxTokens: 1024,
-  temperature: 0.7
+  model: CONFIG.GEMINI.MODEL,
+  baseUrl: CONFIG.GEMINI.BASE_URL,
+  maxTokens: CONFIG.GEMINI.MAX_TOKENS,
+  temperature: CONFIG.GEMINI.TEMPERATURE
 };
 
-// Load API key dari file data.txt
+// Load API key dari config
 export async function loadApiKey() {
   try {
-    const response = await fetch('./src/scripts/data/data.txt');
-    const text = await response.text();
-    const match = text.match(/GEMINI_API_KEY="([^"]+)"/);
-    return match ? match[1] : null;
+    // Langsung return API key dari config
+    const apiKey = CONFIG.GEMINI.API_KEY;
+    
+    if (apiKey && apiKey !== 'YOUR_API_KEY_HERE') {
+      console.log('✅ Gemini API key loaded successfully');
+      return apiKey;
+    } else {
+      console.error('❌ Invalid API key in config');
+      return null;
+    }
   } catch (error) {
     console.error('Error loading API key:', error);
     return null;

@@ -11,16 +11,48 @@ class DatasetService {
 
     try {
       console.log('Loading hadits dataset...');
-      const response = await fetch('./src/scripts/data/hadits.json');
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      // Try multiple paths
+      const possiblePaths = [
+        '/src/scripts/data/hadits.json',
+        './src/scripts/data/hadits.json',
+        'src/scripts/data/hadits.json'
+      ];
+      
+      let data = null;
+      
+      for (const path of possiblePaths) {
+        try {
+          const response = await fetch(path);
+          if (response.ok) {
+            data = await response.json();
+            console.log(`✅ Dataset loaded from: ${path}`);
+            break;
+          }
+        } catch (pathError) {
+          console.log(`❌ Failed to load from ${path}`);
+          continue;
+        }
       }
       
-      this.haditsData = await response.json();
+      if (!data) {
+        // Fallback: use sample data
+        console.warn('⚠️ Using sample hadits data');
+        data = [
+          {
+            text: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ",
+            translation: "Sesungguhnya amal perbuatan itu tergantung pada niatnya",
+            narrator: "Umar bin Khattab",
+            source: "Sahih Bukhari",
+            theme: "niat"
+          }
+        ];
+      }
+      
+      this.haditsData = data;
       this.isLoaded = true;
       
-      console.log(`Loaded ${Array.isArray(this.haditsData) ? this.haditsData.length : 'unknown'} hadits entries`);
+      console.log(`📚 Loaded ${Array.isArray(this.haditsData) ? this.haditsData.length : 'unknown'} hadits entries`);
       return this.haditsData;
       
     } catch (error) {

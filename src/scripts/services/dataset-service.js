@@ -10,13 +10,26 @@ class DatasetService {
       return true;
     }
 
-    // Multiple possible paths for hadits.json
+    // Multiple possible paths for hadits.json - optimized for Netlify deployment
     const possiblePaths = [
-      '/src/data/hadits.json',
-      './src/data/hadits.json', 
+      // Netlify-friendly paths (files should be in public directory)
+      '/hadits.json',
+      './hadits.json',
+      '/public/hadits.json',
+      './public/hadits.json',
+      
+      // Fallback paths for local development
+      '/src/public/hadits.json',
+      './src/public/hadits.json',
+      '/src/scripts/data/hadits.json',
+      './src/scripts/data/hadits.json', 
       '../data/hadits.json',
       '/data/hadits.json',
-      './data/hadits.json'
+      './data/hadits.json',
+      
+      // Additional Netlify paths
+      '/assets/hadits.json',
+      './assets/hadits.json'
     ];
 
     for (const path of possiblePaths) {

@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "npm run prepare-deploy && vite build",
+    "preview": "vite preview",
+    "prepare-deploy": "node prepare-deploy.js",
+    "deploy": "npm run build"
   },
   "devDependencies": {
     "vite": "^6.2.0"

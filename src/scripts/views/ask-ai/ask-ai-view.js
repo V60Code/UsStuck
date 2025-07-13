@@ -359,17 +359,40 @@ class AskAiView {
         </div>
       `;
     } else {
+      const response = conversation.response;
+      const isGemini = response.isGeminiResponse;
+      const hasHadits = response.haditsUsed && response.haditsUsed.length > 0;
+      
       return `
         <div class="message ai">
           <div class="message-avatar ai">AI</div>
           <div class="message-content ai">
-            <p>${conversation.response.text}</p>
-            ${conversation.response.references.length > 0 ? `
-              <div class="message-source">
-                <div class="source-title">Referensi:</div>
-                ${conversation.response.references.map(ref => `<div class="source-text">• ${ref}</div>`).join('')}
+            <p>${response.text}</p>
+            
+            ${hasHadits ? `
+              <div class="hadits-section" style="margin-top: 16px; padding: 12px; background: #f8f9fa; border-left: 4px solid #556B2F; border-radius: 4px;">
+                <div class="hadits-title" style="font-weight: 600; color: #556B2F; margin-bottom: 8px;">📖 Hadits yang Digunakan:</div>
+                ${response.haditsUsed.map((hadits, index) => `
+                  <div class="hadits-item" style="margin-bottom: 8px; padding: 8px; background: white; border-radius: 4px; border: 1px solid #e9ecef;">
+                    <div class="hadits-text" style="font-style: italic; margin-bottom: 4px;">"${hadits.text}"</div>
+                    ${hadits.source ? `<div class="hadits-source" style="font-size: 12px; color: #666;">📚 ${hadits.source}</div>` : ''}
+                    ${hadits.narrator ? `<div class="hadits-narrator" style="font-size: 12px; color: #666;">👤 ${hadits.narrator}</div>` : ''}
+                  </div>
+                `).join('')}
               </div>
             ` : ''}
+            
+            ${response.references && response.references.length > 0 ? `
+              <div class="message-source">
+                <div class="source-title">Referensi:</div>
+                ${response.references.map(ref => `<div class="source-text">• ${ref}</div>`).join('')}
+              </div>
+            ` : ''}
+            
+            <div class="ai-status" style="margin-top: 12px; padding: 6px 8px; background: ${isGemini ? '#e8f5e8' : '#fff3cd'}; border-radius: 4px; font-size: 11px; color: ${isGemini ? '#2d5a2d' : '#856404'};">
+              ${isGemini ? '🤖 Dijawab oleh Gemini AI dengan dataset hadits' : '⚠️ Menggunakan respons fallback'}
+              ${response.fallbackReason ? ` (${response.fallbackReason})` : ''}
+            </div>
           </div>
         </div>
       `;

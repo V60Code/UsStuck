@@ -10,6 +10,9 @@ class AskAiPresenter {
   async init() {
     this.setupEventListeners();
     this.setupStyles();
+    
+    // Initialize Gemini service in background
+    this.initializeGeminiService();
   }
 
   setupEventListeners() {
@@ -185,6 +188,65 @@ class AskAiPresenter {
       toast.classList.remove('show');
       setTimeout(() => document.body.removeChild(toast), 300);
     }, 3000);
+  }
+
+  // Initialize Gemini service in background
+  async initializeGeminiService() {
+    try {
+      console.log('Initializing Gemini service...');
+      const success = await this.model.initializeGemini();
+      
+      if (success) {
+        console.log('Gemini service initialized successfully');
+        this.showToast('🤖 Gemini AI siap digunakan');
+      } else {
+        console.warn('Gemini service initialization failed');
+        this.showToast('⚠️ Gemini AI tidak tersedia, menggunakan mode fallback');
+      }
+    } catch (error) {
+      console.error('Error initializing Gemini service:', error);
+      this.showToast('⚠️ Error loading Gemini AI');
+    }
+  }
+
+  // Test Gemini connection
+  async testGeminiConnection() {
+    try {
+      this.showToast('🔄 Testing Gemini connection...');
+      const result = await this.model.testGeminiConnection();
+      
+      if (result.success) {
+        this.showToast('✅ Gemini AI connection successful');
+        console.log('Gemini test response:', result.response);
+      } else {
+        this.showToast('❌ Gemini AI connection failed');
+        console.error('Gemini test error:', result.error);
+      }
+      
+      return result;
+    } catch (error) {
+      this.showToast('❌ Error testing Gemini connection');
+      console.error('Test connection error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  // Get Gemini service status
+  async getGeminiStatus() {
+    try {
+      const status = await this.model.getGeminiStatus();
+      console.log('Gemini service status:', status);
+      return status;
+    } catch (error) {
+      console.error('Error getting Gemini status:', error);
+      return { error: error.message };
+    }
+  }
+
+  // Toggle Gemini usage
+  toggleGeminiUsage(enabled) {
+    this.model.toggleGemini(enabled);
+    this.showToast(`Gemini AI ${enabled ? 'diaktifkan' : 'dinonaktifkan'}`);
   }
 }
 

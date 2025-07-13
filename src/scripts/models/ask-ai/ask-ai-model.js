@@ -1,32 +1,80 @@
+import GeminiService from '../../services/gemini-service.js';
+
 class AskAiModel {
   constructor() {
     this.questions = [];
     this.responses = [];
     this.isLoading = false;
     this.currentConversation = [];
+    this.geminiService = new GeminiService();
+    this.useGemini = true; // Flag to enable/disable Gemini
   }
 
-  // Simulate AI response (placeholder for future API integration)
+  // Ask question using Gemini AI with hadits dataset
   async askQuestion(question) {
     this.isLoading = true;
     
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Mock responses based on keywords
-    const response = this.generateMockResponse(question);
-    
-    const conversation = {
-      id: Date.now(),
-      question: question,
-      response: response,
-      timestamp: new Date().toISOString()
-    };
-    
-    this.currentConversation.push(conversation);
-    this.isLoading = false;
-    
-    return conversation;
+    try {
+      let response;
+      
+      if (this.useGemini) {
+        // Try using Gemini API with hadits dataset
+        try {
+          const geminiResponse = await this.geminiService.generateResponse(question);
+          response = {
+            text: geminiResponse.text,
+            source: geminiResponse.hasRelevantHadits ? "Berdasarkan Hadits" : "Pengetahuan Islam Umum",
+            references: geminiResponse.sources.map(source => 
+              `${source.source}${source.narrator ? ` - ${source.narrator}` : ''}`
+            ).filter(ref => ref.trim() !== ''),
+            haditsUsed: geminiResponse.sources,
+            isGeminiResponse: true
+          };
+        } catch (geminiError) {
+          console.warn('Gemini API failed, using fallback:', geminiError);
+          response = this.generateMockResponse(question);
+          response.isGeminiResponse = false;
+          response.fallbackReason = geminiError.message;
+        }
+      } else {
+        // Use mock response
+        response = this.generateMockResponse(question);
+        response.isGeminiResponse = false;
+      }
+      
+      const conversation = {
+        id: Date.now(),
+        question: question,
+        response: response,
+        timestamp: new Date().toISOString()
+      };
+      
+      this.currentConversation.push(conversation);
+      this.isLoading = false;
+      
+      return conversation;
+      
+    } catch (error) {
+      this.isLoading = false;
+      console.error('Error in askQuestion:', error);
+      
+      // Return error response
+      const errorResponse = {
+        id: Date.now(),
+        question: question,
+        response: {
+          text: "Maaf, terjadi kesalahan saat memproses pertanyaan Anda. Silakan coba lagi atau konsultasi dengan ustadz.",
+          source: "Sistem",
+          references: [],
+          isGeminiResponse: false,
+          error: error.message
+        },
+        timestamp: new Date().toISOString()
+      };
+      
+      this.currentConversation.push(errorResponse);
+      return errorResponse;
+    }
   }
 
   generateMockResponse(question) {
@@ -69,6 +117,27 @@ class AskAiModel {
 
   getLoadingState() {
     return this.isLoading;
+  }
+
+  // Toggle Gemini usage
+  toggleGemini(enabled) {
+    this.useGemini = enabled;
+    console.log(`Gemini AI ${enabled ? 'enabled' : 'disabled'}`);
+  }
+
+  // Get Gemini service status
+  async getGeminiStatus() {
+    return this.geminiService.getStatus();
+  }
+
+  // Test Gemini connection
+  async testGeminiConnection() {
+    return await this.geminiService.testConnection();
+  }
+
+  // Initialize Gemini service manually
+  async initializeGemini() {
+    return await this.geminiService.initialize();
   }
 }
 

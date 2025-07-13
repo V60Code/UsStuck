@@ -5,62 +5,65 @@ class DatasetService {
   }
 
   async loadHaditsDataset() {
-    if (this.isLoaded && this.haditsData) {
-      return this.haditsData;
+    if (this.haditsData.length > 0) {
+      console.log('Hadits dataset already loaded');
+      return true;
     }
 
-    try {
-      console.log('Loading hadits dataset...');
-      
-      // Try multiple paths
-      const possiblePaths = [
-        '/src/scripts/data/hadits.json',
-        './src/scripts/data/hadits.json',
-        'src/scripts/data/hadits.json'
-      ];
-      
-      let data = null;
-      
-      for (const path of possiblePaths) {
-        try {
-          const response = await fetch(path);
-          if (response.ok) {
-            data = await response.json();
-            console.log(`✅ Dataset loaded from: ${path}`);
-            break;
+    // Multiple possible paths for hadits.json
+    const possiblePaths = [
+      '/src/data/hadits.json',
+      './src/data/hadits.json', 
+      '../data/hadits.json',
+      '/data/hadits.json',
+      './data/hadits.json'
+    ];
+
+    for (const path of possiblePaths) {
+      try {
+        console.log(`Trying to load hadits from: ${path}`);
+        const response = await fetch(path);
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          if (Array.isArray(data) && data.length > 0) {
+            this.haditsData = data;
+            console.log(`✅ Successfully loaded ${data.length} hadits from ${path}`);
+            return true;
+          } else {
+            console.warn(`⚠️ Invalid data format from ${path}`);
           }
-        } catch (pathError) {
-          console.log(`❌ Failed to load from ${path}`);
-          continue;
+        } else {
+          console.log(`❌ Failed to load from ${path}: ${response.status}`);
         }
+      } catch (error) {
+        console.log(`❌ Error loading from ${path}:`, error.message);
       }
-      
-      if (!data) {
-        // Fallback: use sample data
-        console.warn('⚠️ Using sample hadits data');
-        data = [
-          {
-            text: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ",
-            translation: "Sesungguhnya amal perbuatan itu tergantung pada niatnya",
-            narrator: "Umar bin Khattab",
-            source: "Sahih Bukhari",
-            theme: "niat"
-          }
-        ];
-      }
-      
-      this.haditsData = data;
-      this.isLoaded = true;
-      
-      console.log(`📚 Loaded ${Array.isArray(this.haditsData) ? this.haditsData.length : 'unknown'} hadits entries`);
-      return this.haditsData;
-      
-    } catch (error) {
-      console.error('Error loading hadits dataset:', error);
-      this.haditsData = [];
-      this.isLoaded = true;
-      return [];
     }
+
+    // Fallback: create sample data if no file found
+    console.warn('⚠️ Could not load hadits.json, using sample data');
+    this.haditsData = [
+      {
+        id: 1,
+        arabic: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ",
+        translation: "Sesungguhnya amal perbuatan itu tergantung pada niatnya",
+        source: "HR. Bukhari",
+        narrator: "Umar bin Khattab",
+        keywords: ["niat", "amal", "perbuatan", "tujuan"]
+      },
+      {
+        id: 2,
+        arabic: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ",
+        translation: "Barangsiapa beriman kepada Allah dan hari akhir, hendaklah ia berkata baik atau diam",
+        source: "HR. Bukhari & Muslim",
+        narrator: "Abu Hurairah",
+        keywords: ["berkata", "baik", "diam", "iman", "akhirat"]
+      }
+    ];
+    
+    return true;
   }
 
   // Cari hadits yang relevan berdasarkan pertanyaan

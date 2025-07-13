@@ -1,6 +1,6 @@
 import CONFIG from '../config.js';
 
-// Konfigurasi Gemini API
+// Konfigurasi Gemini API - Updated with correct endpoints
 export const GEMINI_CONFIG = {
   model: CONFIG.GEMINI.MODEL,
   baseUrl: CONFIG.GEMINI.BASE_URL,

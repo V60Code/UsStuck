@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Gemini API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Gemini API</h1>
+    
+    <div class="test-section">
+        <h3>1. Test API Key & Configuration</h3>
+        <button onclick="testConfig()">Test Config</button>
+        <div id="config-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>2. Test Direct API Call</h3>
+        <button onclick="testDirectAPI()">Test Direct API</button>
+        <div id="api-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>3. Test Gemini Service</h3>
+        <button onclick="testGeminiService()">Test Service</button>
+        <div id="service-result" class="result"></div>
+    </div>
+
+    <script type="module">
+        // Test configuration
+        window.testConfig = async function() {
+            const resultDiv = document.getElementById('config-result');
+            resultDiv.textContent = 'Testing configuration...';
+            
+            try {
+                const CONFIG = {
+                    GEMINI: {
+                        API_KEY: 'AIzaSyDBltsYy8WI1wATuco1XosChzJu5IqZias',
+                        MODEL: 'gemini-1.5-flash',
+                        BASE_URL: 'https://generativelanguage.googleapis.com/v1/models'
+                    }
+                };
+                
+                const result = {
+                    hasApiKey: !!CONFIG.GEMINI.API_KEY,
+                    apiKeyLength: CONFIG.GEMINI.API_KEY.length,
+                    model: CONFIG.GEMINI.MODEL,
+                    baseUrl: CONFIG.GEMINI.BASE_URL
+                };
+                
+                resultDiv.textContent = JSON.stringify(result, null, 2);
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.textContent = 'Error: ' + error.message;
+                resultDiv.className = 'result error';
+            }
+        };
+
+        // Test direct API call
+        window.testDirectAPI = async function() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.textContent = 'Testing direct API call...';
+            
+            try {
+                const apiKey = 'AIzaSyDBltsYy8WI1wATuco1XosChzJu5IqZias';
+                const model = 'gemini-1.5-flash';
+                const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`;
+                
+                const requestBody = {
+                    contents: [{
+                        parts: [{
+                            text: "Assalamu'alaikum, apa kabar?"
+                        }]
+                    }],
+                    generationConfig: {
+                        temperature: 0.7,
+                        topK: 40,
+                        topP: 0.95,
+                        maxOutputTokens: 1024,
+                    }
+                };
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.text();
+                    throw new Error(`API Error: ${response.status} - ${errorData}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                    const responseText = data.candidates[0].content.parts[0].text;
+                    resultDiv.textContent = `✅ API Call Success!\n\nResponse: ${responseText}`;
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.textContent = `❌ Invalid response format:\n${JSON.stringify(data, null, 2)}`;
+                    resultDiv.className = 'result error';
+                }
+                
+            } catch (error) {
+                resultDiv.textContent = `❌ API Call Failed:\n${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        };
+
+        // Test Gemini Service (if available)
+        window.testGeminiService = async function() {
+            const resultDiv = document.getElementById('service-result');
+            resultDiv.textContent = 'Testing Gemini Service...';
+            
+            try {
+                // Try to import and test the service
+                const { default: GeminiService } = await import('./src/scripts/services/gemini-service.js');
+                
+                const service = new GeminiService();
+                const testResult = await service.testConnection();
+                
+                resultDiv.textContent = JSON.stringify(testResult, null, 2);
+                resultDiv.className = testResult.success ? 'result success' : 'result error';
+                
+            } catch (error) {
+                resultDiv.textContent = `❌ Service Test Failed:\n${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        };
+    </script>
+</body>
+</html>

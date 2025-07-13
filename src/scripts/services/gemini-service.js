@@ -59,9 +59,10 @@ class GeminiService {
       return {
         text: response,
         sources: relevantHadits.map(hadits => ({
-          text: hadits.translation || hadits.terjemahan || hadits.indonesian || '',
-          source: hadits.source || hadits.sumber || hadits.kitab || '',
-          narrator: hadits.narrator || hadits.perawi || ''
+          text: hadits.Terjemahan || hadits.translation || hadits.terjemahan || hadits.indonesian || '',
+          arabic: hadits.Arab || hadits.text || hadits.arab || hadits.arabic || '',
+          source: hadits.Nama || hadits.source || hadits.sumber || hadits.kitab || '',
+          narrator: hadits.Perawi || hadits.narrator || hadits.perawi || ''
         })),
         hasRelevantHadits: relevantHadits.length > 0
       };

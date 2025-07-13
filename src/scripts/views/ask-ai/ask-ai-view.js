@@ -370,15 +370,44 @@ class AskAiView {
             <p>${response.text}</p>
             
             ${hasHadits ? `
-              <div class="hadits-section" style="margin-top: 16px; padding: 12px; background: #f8f9fa; border-left: 4px solid #556B2F; border-radius: 4px;">
-                <div class="hadits-title" style="font-weight: 600; color: #556B2F; margin-bottom: 8px;">📖 Hadits yang Digunakan:</div>
-                ${response.haditsUsed.map((hadits, index) => `
-                  <div class="hadits-item" style="margin-bottom: 8px; padding: 8px; background: white; border-radius: 4px; border: 1px solid #e9ecef;">
-                    <div class="hadits-text" style="font-style: italic; margin-bottom: 4px;">"${hadits.text}"</div>
-                    ${hadits.source ? `<div class="hadits-source" style="font-size: 12px; color: #666;">📚 ${hadits.source}</div>` : ''}
-                    ${hadits.narrator ? `<div class="hadits-narrator" style="font-size: 12px; color: #666;">👤 ${hadits.narrator}</div>` : ''}
-                  </div>
-                `).join('')}
+              <div class="hadits-section" style="margin-top: 16px; padding: 16px; background: #f8f9fa; border-left: 4px solid #556B2F; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <div class="hadits-title" style="font-weight: 600; color: #556B2F; margin-bottom: 12px; font-size: 14px;">
+                  📖 Hadits yang Digunakan:
+                </div>
+                ${response.haditsUsed.map((hadits, index) => {
+                  // Get the hadits text - use text field which contains the translation
+                  const haditsText = hadits.text || hadits.translation || hadits.terjemahan || '';
+                  const arabicText = hadits.arabic || hadits.Arab || hadits.arab || '';
+                  
+                  return `
+                    <div class="hadits-item" style="margin-bottom: 12px; padding: 12px; background: white; border-radius: 6px; border: 1px solid #e9ecef;">
+                      ${arabicText ? `
+                        <div class="hadits-arabic" style="font-family: 'Amiri', 'Times New Roman', serif; font-size: 16px; line-height: 1.8; text-align: right; margin-bottom: 8px; color: #2c3e50; direction: rtl;">
+                          ${arabicText}
+                        </div>
+                      ` : ''}
+                      
+                      ${haditsText ? `
+                        <div class="hadits-translation" style="font-style: italic; margin-bottom: 8px; color: #34495e; line-height: 1.6;">
+                          "${haditsText}"
+                        </div>
+                      ` : ''}
+                      
+                      <div class="hadits-metadata" style="border-top: 1px solid #eee; padding-top: 8px; margin-top: 8px;">
+                        ${hadits.source ? `
+                          <div class="hadits-source" style="font-size: 12px; color: #666; margin-bottom: 4px;">
+                            📚 <strong>Sumber:</strong> ${hadits.source}
+                          </div>
+                        ` : ''}
+                        ${hadits.narrator ? `
+                          <div class="hadits-narrator" style="font-size: 12px; color: #666;">
+                            👤 <strong>Perawi:</strong> ${hadits.narrator}
+                          </div>
+                        ` : ''}
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
               </div>
             ` : ''}
             

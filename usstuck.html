@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UsStuck - AI-Powered Islamic Education</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS for Islamic Theme -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f7f4; /* Off-white background */
+        }
+        .islamic-pattern-bg {
+            background-image: url('https://www.transparenttextures.com/patterns/islamic.png');
+            background-color: #556B2F; /* Dark Olive */
+            background-blend-mode: overlay;
+        }
+        .brand-text {
+            color: #D2B48C; /* Tan color */
+        }
+        .btn-primary {
+            background-color: #D2B48C;
+            color: #ffffff;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #BC9E7C;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        .input-chat {
+            border: 1px solid #e0e0e0;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .input-chat:focus {
+            border-color: #D2B48C;
+            box-shadow: 0 0 0 3px rgba(210, 180, 140, 0.2);
+            outline: none;
+        }
+        
+        /* Custom color classes to override Tailwind */
+        .bg-dark-olive { background-color: #556B2F; }
+        .bg-dark-olive:hover { background-color: #4A5D28; }
+        .text-dark-olive { color: #556B2F; }
+        .border-dark-olive { border-color: #556B2F; }
+        .bg-light-olive { background-color: #f5f5dc; } /* Beige */
+
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation Bar -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-800">Us<span class="brand-text">Stuck</span></a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#ask-ai" class="text-gray-600 hover:text-dark-olive">Ask AI</a>
+                <a href="#hadith-catalog" class="text-gray-600 hover:text-dark-olive">Catalog</a>
+                <a href="#forum" class="text-gray-600 hover:text-dark-olive">Forum</a>
+                <a href="#about-us" class="text-gray-600 hover:text-dark-olive">About Us</a>
+            </div>
+            <a href="#" class="hidden md:block bg-dark-olive text-white px-5 py-2 rounded-lg transition-colors">Login / My Account</a>
+            <button class="md:hidden focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="islamic-pattern-bg text-white py-24 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">Find Your Answers</h1>
+                <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto">Gain deep Islamic understanding based on the Qur'an and Hadith through trusted AI technology.</p>
+                <div class="mt-8">
+                    <a href="#ask-ai" class="btn-primary font-semibold py-3 px-8 rounded-lg text-lg">Start Asking</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Section: Ask AI Bot (Main Feature) -->
+        <section id="ask-ai" class="py-20 md:py-28">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Ask <span class="brand-text">UsStuck AI</span></h2>
+                    <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Have questions about fiqh, aqidah, or Islamic history? Ask our intelligent AI bot. Every answer is sourced from the Qur'an and relevant Hadith.</p>
+                </div>
+                <div class="max-w-3xl mx-auto card p-6 md:p-8">
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-gray-200 h-10 w-10 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-gray-600">U</div>
+                            <div class="bg-gray-100 p-4 rounded-lg rounded-tl-none">
+                                <p class="text-gray-800">What is the ruling on fasting for someone who is ill?</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3 justify-end">
+                            <div class="bg-light-olive p-4 rounded-lg rounded-br-none max-w-xl">
+                                <p class="text-gray-800 mb-3">Certainly. For someone who is ill, Islam provides a concession (rukhsah) to not fast. However, they are required to make up for it (qadha) on other days after they have recovered.</p>
+                                <div class="border-l-4 border-dark-olive pl-3 text-sm text-gray-600">
+                                    <p class="font-semibold">Source:</p>
+                                    <p>"...So whoever among you is ill or on a journey [during them] - then an equal number of days [are to be made up]..."</p>
+                                    <p class="font-medium mt-1">- QS. Al-Baqarah: 184</p>
+                                </div>
+                            </div>
+                            <div class="bg-dark-olive h-10 w-10 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-white">AI</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3 pt-4 border-t border-gray-200">
+                        <input type="text" placeholder="Type your question here..." class="w-full px-4 py-3 rounded-lg input-chat">
+                        <button class="btn-primary p-3 rounded-lg flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trending in Your Age Section (Supporting Feature) -->
+        <section id="trending" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Trending In <span class="brand-text">Your Age Group</span></h2>
+                    <p class="text-gray-600 mt-2 max-w-2xl mx-auto">See popular topics and questions discussed by users in their 20s.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6"><p class="text-gray-700">How to stay consistent in prayer (salah)?</p></div>
+                    <div class="card p-6"><p class="text-gray-700">What are the best ways to manage finances according to Islam?</p></div>
+                    <div class="card p-6"><p class="text-gray-700">Finding a spouse: Islamic perspectives on modern dating.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Section: Hadith & Ayat Catalog (Supporting Feature) -->
+        <section id="hadith-catalog" class="py-20 md:py-28">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Explore <span class="brand-text">Hadith & Ayat</span></h2>
+                    <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Access our digital library of Qur'anic verses and Hadith collections. Use the search to study and find evidence independently.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6 border-t-4 border-dark-olive">
+                        <h3 class="font-bold text-lg text-gray-800 mb-1">Sahih al-Bukhari 1</h3>
+                        <p class="text-sm text-gray-500 mb-3">Book of Revelation</p>
+                        <p class="text-gray-700 leading-relaxed">"Verily, actions are but by intentions, and every person will have only that which he intended..."</p>
+                        <a href="#" class="text-dark-olive font-semibold mt-4 inline-block hover:underline">Read More &rarr;</a>
+                    </div>
+                    <div class="card p-6 border-t-4 border-dark-olive">
+                        <h3 class="font-bold text-lg text-gray-800 mb-1">Sahih Muslim 55</h3>
+                        <p class="text-sm text-gray-500 mb-3">Book of Faith</p>
+                        <p class="text-gray-700 leading-relaxed">"Islam is built upon five [pillars]: testifying that there is no god but Allah and that Muhammad is the Messenger of Allah, establishing prayer..."</p>
+                        <a href="#" class="text-dark-olive font-semibold mt-4 inline-block hover:underline">Read More &rarr;</a>
+                    </div>
+                    <div class="card p-6 border-t-4 border-dark-olive">
+                        <h3 class="font-bold text-lg text-gray-800 mb-1">Jami` at-Tirmidhi 2516</h3>
+                        <p class="text-sm text-gray-500 mb-3">Book on the Description of the Day of Judgement</p>
+                        <p class="text-gray-700 leading-relaxed">"Take advantage of five before five: your youth before your old age, your health before your sickness..."</p>
+                        <a href="#" class="text-dark-olive font-semibold mt-4 inline-block hover:underline">Read More &rarr;</a>
+                    </div>
+                </div>
+                <div class="text-center mt-12">
+                    <a href="#" class="btn-primary font-semibold py-3 px-8 rounded-lg text-lg">View Full Catalog</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Discussion Forum Section (Supporting Feature) -->
+        <section id="forum" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Join The <span class="brand-text">Discussion</span></h2>
+                    <p class="text-gray-600 mt-2 max-w-2xl mx-auto">A place for logged-in users to ask questions and seek perspectives from others, creating a communal learning environment.</p>
+                </div>
+                <div class="max-w-4xl mx-auto space-y-4">
+                    <div class="card flex items-center justify-between p-5">
+                        <div>
+                            <h4 class="font-bold text-lg text-gray-800">Advice for a new revert?</h4>
+                            <p class="text-sm text-gray-500">by Abdullah</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-dark-olive">15 Replies</p>
+                            <p class="text-sm text-gray-500">Last reply 2h ago</p>
+                        </div>
+                    </div>
+                    <div class="card flex items-center justify-between p-5">
+                        <div>
+                            <h4 class="font-bold text-lg text-gray-800">Doubts about Riba in modern banking</h4>
+                            <p class="text-sm text-gray-500">by Fatima</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-dark-olive">28 Replies</p>
+                            <p class="text-sm text-gray-500">Last reply 5h ago</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="text-center mt-12">
+                    <a href="#" class="btn-primary font-semibold py-3 px-8 rounded-lg text-lg">Go to Forum</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- About Us Section (Supporting Feature) -->
+        <section id="about-us" class="py-20 md:py-28">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800">About <span class="brand-text">UsStuck</span></h2>
+                <p class="text-gray-600 mt-4 max-w-3xl mx-auto">UsStuck was born from a simple philosophy: to make authentic Islamic knowledge accessible and relatable for the modern world. Our mission is to provide clear, well-sourced answers to your questions, fostering a deeper connection with faith through technology. We are dedicated to creating a supportive community for learning and growth.</p>
+                <div class="mt-8">
+                    <a href="#" class="bg-dark-olive text-white font-semibold py-3 px-8 rounded-lg text-lg transition-colors">Support Our Mission (Donate)</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold">Us<span class="brand-text">Stuck</span></h3>
+                    <p class="text-gray-400 mt-2">A modern Islamic education platform for the new generation.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg">Quick Links</h4>
+                    <ul class="mt-4 space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Home</a></li>
+                        <li><a href="#ask-ai" class="hover:text-white">Ask AI Bot</a></li>
+                        <li><a href="#hadith-catalog" class="hover:text-white">Catalog</a></li>
+                        <li><a href="#forum" class="hover:text-white">Forum</a></li>
+                        <li><a href="#about-us" class="hover:text-white">About Us</a></li>
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg">Follow Us</h4>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" /></svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.08 2.525c.636-.247 1.363-.416 2.427.465C9.53 2.013 9.884 2 12.315 2zM12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm6.406-11.845a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z" clip-rule="evenodd" /></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
+                <p>&copy; 2024 UsStuck. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

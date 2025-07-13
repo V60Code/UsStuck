@@ -70,66 +70,230 @@ class DatasetService {
      return true;
    }
 
-   // Cari hadits yang relevan berdasarkan pertanyaan
+   // Cari hadits yang relevan berdasarkan pertanyaan dengan algoritma yang lebih canggih
    findRelevantHadits(question) {
      if (!this.haditsData || !Array.isArray(this.haditsData)) {
        return [];
      }
      
+     console.log(`🔍 Searching for hadits related to: "${question}"`);
+     console.log(`📊 Total hadits in dataset: ${this.haditsData.length}`);
+     
      const keywords = this.extractKeywords(question);
+     const semanticKeywords = this.extractSemanticKeywords(question);
      const relevantHadits = [];
      
      for (const hadits of this.haditsData) {
-       const score = this.calculateRelevanceScore(hadits, keywords);
+       const score = this.calculateAdvancedRelevanceScore(hadits, keywords, semanticKeywords, question);
        if (score > 0) {
          relevantHadits.push({
            ...hadits,
-           relevanceScore: score
+           relevanceScore: score,
+           matchDetails: this.getMatchDetails(hadits, keywords, semanticKeywords)
          });
        }
      }
      
      // Sort by relevance score and return top 3
-     return relevantHadits
+     const sortedResults = relevantHadits
        .sort((a, b) => b.relevanceScore - a.relevanceScore)
        .slice(0, 3);
+     
+     console.log(`✅ Found ${sortedResults.length} relevant hadits`);
+     if (sortedResults.length > 0) {
+       console.log(`🎯 Top result score: ${sortedResults[0].relevanceScore.toFixed(2)}`);
+       console.log(`📝 Top result preview: ${(sortedResults[0].Terjemahan || sortedResults[0].translation || '').substring(0, 100)}...`);
+     }
+     
+     return sortedResults;
    }
 
    extractKeywords(question) {
      // Remove common words and extract meaningful keywords
-     const commonWords = ['apa', 'bagaimana', 'mengapa', 'kapan', 'dimana', 'siapa', 'yang', 'adalah', 'tentang', 'dalam', 'untuk', 'dengan', 'dari', 'ke', 'di', 'pada', 'oleh', 'dan', 'atau', 'tetapi', 'jika', 'maka'];
+     const commonWords = ['apa', 'bagaimana', 'mengapa', 'kapan', 'dimana', 'siapa', 'yang', 'adalah', 'tentang', 'dalam', 'untuk', 'dengan', 'dari', 'ke', 'di', 'pada', 'oleh', 'dan', 'atau', 'tetapi', 'jika', 'maka', 'itu', 'ini', 'tersebut', 'dapat', 'bisa', 'harus', 'akan', 'telah', 'sudah', 'tidak', 'juga', 'serta', 'bahwa'];
      
      return question
        .toLowerCase()
        .replace(/[^\w\s]/g, ' ')
        .split(/\s+/)
        .filter(word => word.length > 2 && !commonWords.includes(word))
-       .slice(0, 10); // Limit to 10 keywords
+       .slice(0, 15); // Increased limit for better matching
    }
 
-   calculateRelevanceScore(hadits, keywords) {
-     let score = 0;
+   // Extract semantic keywords based on Islamic concepts
+   extractSemanticKeywords(question) {
+     const questionLower = question.toLowerCase();
+     const semanticMap = {
+       // Definisi dan konsep dasar
+       'islam': ['islam', 'muslim', 'menyembah allah', 'tidak menyekutukan', 'shalat', 'zakat', 'puasa', 'ramadan', 'syahadat'],
+       'iman': ['iman', 'beriman', 'allah', 'malaikat', 'kitab', 'rasul', 'hari akhir', 'qada qadar', 'takdir'],
+       'ihsan': ['ihsan', 'menyembah allah', 'seolah melihat', 'dia melihat'],
+       
+       // Ibadah
+       'shalat': ['shalat', 'salat', 'sembahyang', 'rukun', 'syarat', 'wudhu', 'kiblat'],
+       'puasa': ['puasa', 'shaum', 'ramadan', 'sahur', 'berbuka', 'imsak'],
+       'zakat': ['zakat', 'sedekah', 'infaq', 'harta', 'fakir', 'miskin'],
+       'haji': ['haji', 'umrah', 'makkah', 'ka\'bah', 'ihram', 'tawaf'],
+       
+       // Akhlak dan perilaku
+       'akhlak': ['akhlak', 'perilaku', 'adab', 'sopan', 'santun', 'berbuat baik'],
+       'orang tua': ['orang tua', 'ibu', 'ayah', 'berbakti', 'birrul walidain'],
+       'tetangga': ['tetangga', 'bertetangga', 'hak tetangga'],
+       
+       // Muamalah
+       'jual beli': ['jual', 'beli', 'perdagangan', 'bisnis', 'halal', 'haram'],
+       'riba': ['riba', 'bunga', 'tambahan', 'haram'],
+       
+       // Konsep waktu dan eskatologi
+       'hari kiamat': ['kiamat', 'hari akhir', 'akhirat', 'yaumul qiyamah', 'tanda kiamat'],
+       'surga neraka': ['surga', 'neraka', 'jannah', 'jahannam']
+     };
      
-     // Check different fields of hadits object
-     const searchFields = [
-       hadits.text || hadits.arab || hadits.arabic || '',
-       hadits.translation || hadits.terjemahan || hadits.indonesian || '',
-       hadits.narrator || hadits.perawi || '',
-       hadits.source || hadits.sumber || hadits.kitab || '',
-       hadits.theme || hadits.tema || hadits.category || ''
-     ];
+     const foundConcepts = [];
      
-     const searchText = searchFields.join(' ').toLowerCase();
-     
-     keywords.forEach(keyword => {
-       const regex = new RegExp(keyword, 'gi');
-       const matches = searchText.match(regex);
-       if (matches) {
-         score += matches.length;
+     Object.keys(semanticMap).forEach(concept => {
+       if (semanticMap[concept].some(keyword => questionLower.includes(keyword))) {
+         foundConcepts.push(...semanticMap[concept]);
        }
      });
      
+     return [...new Set(foundConcepts)]; // Remove duplicates
+   }
+
+   calculateAdvancedRelevanceScore(hadits, keywords, semanticKeywords, originalQuestion) {
+     let score = 0;
+     
+     // Map field names correctly based on actual data structure
+     const searchFields = {
+       arabic: hadits.Arab || hadits.text || hadits.arab || hadits.arabic || '',
+       translation: hadits.Terjemahan || hadits.translation || hadits.terjemahan || hadits.indonesian || '',
+       narrator: hadits.Perawi || hadits.narrator || hadits.perawi || '',
+       source: hadits.Nama || hadits.source || hadits.sumber || hadits.kitab || '',
+       id: hadits.id || ''
+     };
+     
+     // Weight different fields differently
+     const fieldWeights = {
+       translation: 3.0,  // Highest weight for Indonesian translation
+       arabic: 2.0,       // High weight for Arabic text
+       narrator: 1.0,     // Medium weight for narrator
+       source: 1.0,       // Medium weight for source
+       id: 0.5           // Low weight for ID
+     };
+     
+     // 1. Exact keyword matching
+     Object.keys(searchFields).forEach(fieldName => {
+       const fieldText = searchFields[fieldName].toLowerCase();
+       const weight = fieldWeights[fieldName] || 1.0;
+       
+       keywords.forEach(keyword => {
+         const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
+         const matches = fieldText.match(regex);
+         if (matches) {
+           score += matches.length * weight * 2; // Exact word boundary matches get higher score
+         }
+         
+         // Partial matches (less score)
+         if (fieldText.includes(keyword)) {
+           score += weight * 0.5;
+         }
+       });
+     });
+     
+     // 2. Semantic keyword matching (higher weight)
+     Object.keys(searchFields).forEach(fieldName => {
+       const fieldText = searchFields[fieldName].toLowerCase();
+       const weight = fieldWeights[fieldName] || 1.0;
+       
+       semanticKeywords.forEach(keyword => {
+         if (fieldText.includes(keyword)) {
+           score += weight * 3; // Semantic matches get higher score
+         }
+       });
+     });
+     
+     // 3. Special boost for specific question types
+     const questionLower = originalQuestion.toLowerCase();
+     const translationText = searchFields.translation.toLowerCase();
+     
+     // Boost for definition questions
+     if (questionLower.includes('apa itu') || questionLower.includes('definisi') || questionLower.includes('pengertian')) {
+       if (translationText.includes('adalah') || translationText.includes('yaitu') || translationText.includes('itu')) {
+         score += 5;
+       }
+     }
+     
+     // Boost for Islam definition specifically
+     if (questionLower.includes('islam')) {
+       if (translationText.includes('islam adalah') || 
+           translationText.includes('menyembah allah') || 
+           translationText.includes('tidak menyekutukan') ||
+           translationText.includes('shalat') && translationText.includes('zakat') && translationText.includes('puasa')) {
+         score += 10; // High boost for Islam definition
+       }
+     }
+     
+     // Boost for Iman definition
+     if (questionLower.includes('iman')) {
+       if (translationText.includes('iman adalah') || 
+           translationText.includes('beriman kepada allah') || 
+           translationText.includes('malaikat') && translationText.includes('kitab') && translationText.includes('rasul')) {
+         score += 10;
+       }
+     }
+     
+     // Boost for Ihsan definition
+     if (questionLower.includes('ihsan')) {
+       if (translationText.includes('ihsan') || 
+           translationText.includes('menyembah allah seolah') || 
+           translationText.includes('seolah melihat')) {
+         score += 10;
+       }
+     }
+     
+     // 4. Authority boost based on source
+     const source = searchFields.source.toLowerCase();
+     if (source.includes('bukhari') || source.includes('muslim')) {
+       score += 2; // Boost for most authentic sources
+     }
+     
      return score;
+   }
+
+   // Get detailed match information for debugging
+   getMatchDetails(hadits, keywords, semanticKeywords) {
+     const searchFields = {
+       arabic: hadits.Arab || hadits.text || hadits.arab || hadits.arabic || '',
+       translation: hadits.Terjemahan || hadits.translation || hadits.terjemahan || hadits.indonesian || '',
+       narrator: hadits.Perawi || hadits.narrator || hadits.perawi || '',
+       source: hadits.Nama || hadits.source || hadits.sumber || hadits.kitab || ''
+     };
+     
+     const matches = {
+       keywordMatches: [],
+       semanticMatches: [],
+       fieldMatches: {}
+     };
+     
+     // Find keyword matches
+     keywords.forEach(keyword => {
+       Object.keys(searchFields).forEach(field => {
+         if (searchFields[field].toLowerCase().includes(keyword)) {
+           matches.keywordMatches.push({ keyword, field });
+         }
+       });
+     });
+     
+     // Find semantic matches
+     semanticKeywords.forEach(keyword => {
+       Object.keys(searchFields).forEach(field => {
+         if (searchFields[field].toLowerCase().includes(keyword)) {
+           matches.semanticMatches.push({ keyword, field });
+         }
+       });
+     });
+     
+     return matches;
    }
 
    formatHaditsForContext(hadits) {
@@ -138,20 +302,31 @@ class DatasetService {
      hadits.forEach((item, index) => {
        let haditsText = `\n--- Hadits ${index + 1} ---\n`;
        
-       if (item.text || item.arab || item.arabic) {
-         haditsText += `Arab: ${item.text || item.arab || item.arabic}\n`;
+       // Use correct field mapping based on actual data structure
+       const arabicText = item.Arab || item.text || item.arab || item.arabic || '';
+       const translationText = item.Terjemahan || item.translation || item.terjemahan || item.indonesian || '';
+       const narratorText = item.Perawi || item.narrator || item.perawi || '';
+       const sourceText = item.Nama || item.source || item.sumber || item.kitab || '';
+       
+       if (arabicText) {
+         haditsText += `Arab: ${arabicText}\n`;
        }
        
-       if (item.translation || item.terjemahan || item.indonesian) {
-         haditsText += `Terjemahan: ${item.translation || item.terjemahan || item.indonesian}\n`;
+       if (translationText) {
+         haditsText += `Terjemahan: ${translationText}\n`;
        }
        
-       if (item.narrator || item.perawi) {
-         haditsText += `Perawi: ${item.narrator || item.perawi}\n`;
+       if (narratorText) {
+         haditsText += `Perawi: ${narratorText}\n`;
        }
        
-       if (item.source || item.sumber || item.kitab) {
-         haditsText += `Sumber: ${item.source || item.sumber || item.kitab}\n`;
+       if (sourceText) {
+         haditsText += `Sumber: ${sourceText}\n`;
+       }
+       
+       // Add relevance score for debugging
+       if (item.relevanceScore) {
+         haditsText += `Skor Relevansi: ${item.relevanceScore.toFixed(2)}\n`;
        }
        
        formatted.push(haditsText);

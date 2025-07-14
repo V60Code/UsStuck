@@ -139,6 +139,26 @@ class AskAiModel {
   async initializeGemini() {
     return await this.geminiService.initialize();
   }
+
+  // Clear cache
+  async clearCache() {
+    return this.geminiService.clearCache();
+  }
+
+  // Export cache
+  async exportCache() {
+    return this.geminiService.exportCache();
+  }
+
+  // Import cache
+  async importCache(cacheData) {
+    return this.geminiService.importCache(cacheData);
+  }
+
+  // Reset quota (for testing)
+  async resetQuota() {
+    return this.geminiService.resetQuota();
+  }
 }
 
 export default AskAiModel;

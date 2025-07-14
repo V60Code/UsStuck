@@ -13,6 +13,37 @@ class AskAiView {
             <p class="section-subtitle">
               Tanyakan pertanyaan tentang Islam dan dapatkan jawaban berdasarkan Al-Quran dan Hadits
             </p>
+            
+            <!-- AI Status Display -->
+            <div class="ai-status-container">
+              <div id="ai-status" class="ai-status">
+                <div class="status-indicator unknown">
+                  <span class="status-dot"></span>
+                  <span class="status-text">⚪ Memuat...</span>
+                </div>
+                <div class="status-details">
+                  <div>📊 Cache Hit: 0%</div>
+                  <div>📈 Quota: 0/1500</div>
+                </div>
+              </div>
+              <button id="status-toggle" class="status-toggle-btn" title="Toggle detailed status">
+                📊
+              </button>
+            </div>
+            
+            <!-- Detailed Status Panel (Hidden by default) -->
+            <div id="status-panel" class="status-panel" style="display: none;">
+              <div class="status-panel-header">
+                <h3>📊 AI System Status</h3>
+                <div class="status-actions">
+                  <button id="clear-cache-btn" class="action-btn">🗑️ Clear Cache</button>
+                  <button id="export-cache-btn" class="action-btn">📤 Export Cache</button>
+                </div>
+              </div>
+              <div id="status-details" class="status-panel-content">
+                Loading status...
+              </div>
+            </div>
           </div>
 
           <div class="chat-container">
@@ -351,6 +382,210 @@ class AskAiView {
                40% { content: '.'; }
                60% { content: '..'; }
                80%, 100% { content: '...'; }
+             }
+
+             /* AI Status Styles */
+             .ai-status-container {
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               gap: 12px;
+               margin: 20px 0;
+               padding: 16px;
+               background: #f8f9fa;
+               border-radius: 12px;
+               border: 1px solid #e9ecef;
+             }
+
+             .ai-status {
+               display: flex;
+               align-items: center;
+               gap: 16px;
+               flex: 1;
+               max-width: 400px;
+             }
+
+             .status-indicator {
+               display: flex;
+               align-items: center;
+               gap: 8px;
+               padding: 8px 12px;
+               border-radius: 20px;
+               font-size: 14px;
+               font-weight: 500;
+               transition: all 0.3s ease;
+             }
+
+             .status-indicator.healthy {
+               background: #d4edda;
+               color: #155724;
+               border: 1px solid #c3e6cb;
+             }
+
+             .status-indicator.warning {
+               background: #fff3cd;
+               color: #856404;
+               border: 1px solid #ffeaa7;
+             }
+
+             .status-indicator.critical {
+               background: #f8d7da;
+               color: #721c24;
+               border: 1px solid #f5c6cb;
+             }
+
+             .status-indicator.unknown {
+               background: #e2e3e5;
+               color: #6c757d;
+               border: 1px solid #d6d8db;
+             }
+
+             .status-dot {
+               width: 8px;
+               height: 8px;
+               border-radius: 50%;
+               background: currentColor;
+               animation: pulse 2s infinite;
+             }
+
+             .status-details {
+               display: flex;
+               gap: 16px;
+               font-size: 12px;
+               color: #6c757d;
+             }
+
+             .status-toggle-btn {
+               background: #556B2F;
+               color: white;
+               border: none;
+               border-radius: 50%;
+               width: 40px;
+               height: 40px;
+               cursor: pointer;
+               font-size: 16px;
+               transition: all 0.3s ease;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+             }
+
+             .status-toggle-btn:hover {
+               background: #6B8E23;
+               transform: scale(1.05);
+             }
+
+             /* Status Panel Styles */
+             .status-panel {
+               margin: 20px 0;
+               background: white;
+               border: 1px solid #e9ecef;
+               border-radius: 12px;
+               box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+               overflow: hidden;
+               animation: slideDown 0.3s ease-out;
+             }
+
+             @keyframes slideDown {
+               from {
+                 opacity: 0;
+                 transform: translateY(-10px);
+               }
+               to {
+                 opacity: 1;
+                 transform: translateY(0);
+               }
+             }
+
+             .status-panel-header {
+               background: #f8f9fa;
+               padding: 16px 20px;
+               border-bottom: 1px solid #e9ecef;
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+             }
+
+             .status-panel-header h3 {
+               margin: 0;
+               font-size: 16px;
+               color: #495057;
+             }
+
+             .status-actions {
+               display: flex;
+               gap: 8px;
+             }
+
+             .action-btn {
+               background: #556B2F;
+               color: white;
+               border: none;
+               padding: 6px 12px;
+               border-radius: 6px;
+               font-size: 12px;
+               cursor: pointer;
+               transition: all 0.3s ease;
+             }
+
+             .action-btn:hover {
+               background: #6B8E23;
+               transform: translateY(-1px);
+             }
+
+             .status-panel-content {
+               padding: 20px;
+             }
+
+             .status-section {
+               margin-bottom: 20px;
+             }
+
+             .status-section:last-child {
+               margin-bottom: 0;
+             }
+
+             .status-section h4 {
+               margin: 0 0 12px 0;
+               font-size: 14px;
+               color: #495057;
+               font-weight: 600;
+             }
+
+             .status-grid {
+               display: grid;
+               grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+               gap: 8px;
+               font-size: 13px;
+               color: #6c757d;
+             }
+
+             .status-grid > div {
+               padding: 8px 12px;
+               background: #f8f9fa;
+               border-radius: 6px;
+               border: 1px solid #e9ecef;
+             }
+
+             @media (max-width: 768px) {
+               .ai-status-container {
+                 flex-direction: column;
+                 gap: 8px;
+               }
+
+               .ai-status {
+                 flex-direction: column;
+                 text-align: center;
+                 gap: 8px;
+               }
+
+               .status-details {
+                 justify-content: center;
+               }
+
+               .status-grid {
+                 grid-template-columns: 1fr;
+               }
              }
            </style>
         </div>

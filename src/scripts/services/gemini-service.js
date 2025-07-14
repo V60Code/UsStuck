@@ -1,9 +1,13 @@
 import { GEMINI_CONFIG, ISLAMIC_CONTEXT_PROMPT, loadApiKey } from '../config/gemini-config.js';
 import DatasetService from './dataset-service.js';
+import SmartCache from '../utils/smart-cache.js';
+import QuotaManager from '../utils/quota-manager.js';
 
 class GeminiService {
   constructor() {
     this.datasetService = new DatasetService();
+    this.smartCache = new SmartCache();
+    this.quotaManager = new QuotaManager();
     this.apiKey = null;
     this.isInitialized = false;
   }
@@ -39,6 +43,39 @@ class GeminiService {
         throw new Error('Gemini service not initialized');
       }
 
+      // 1. Check cache first
+      const cachedResponse = this.smartCache.findCachedResponse(question);
+      if (cachedResponse) {
+        console.log('🎯 Using cached response');
+        this.smartCache.updateAccessCount(question);
+        return {
+          ...cachedResponse.response,
+          fromCache: true,
+          cacheType: cachedResponse.cacheType
+        };
+      }
+
+      // 2. Check quota before API call
+      const quotaCheck = this.quotaManager.canMakeRequest();
+      if (!quotaCheck.canMake) {
+        console.warn('❌ Quota exceeded:', quotaCheck);
+        
+        if (!quotaCheck.dailyLimit) {
+          const resetTime = this.quotaManager.getTimeUntilReset();
+          throw new Error(`Quota harian habis. Reset dalam ${resetTime.hours}j ${resetTime.minutes}m`);
+        }
+        
+        if (!quotaCheck.minuteLimit) {
+          throw new Error('Rate limit exceeded. Tunggu 1 menit.');
+        }
+      }
+
+      // 3. Wait if needed for rate limiting
+      const canProceed = await this.quotaManager.waitIfNeeded();
+      if (!canProceed) {
+        throw new Error('Daily quota exceeded');
+      }
+
       // Find relevant hadits
       const relevantHadits = this.datasetService.findRelevantHadits(question);
       console.log(`Found ${relevantHadits.length} relevant hadits for question`);
@@ -53,10 +90,13 @@ class GeminiService {
         .replace('{HADITS_CONTEXT}', haditsContext)
         .replace('{USER_QUESTION}', question);
 
+      // Record request before API call
+      this.quotaManager.recordRequest();
+
       // Call Gemini API
       const response = await this.callGeminiAPI(prompt);
       
-      return {
+      const result = {
         text: response,
         sources: relevantHadits.map(hadits => ({
           text: hadits.Terjemahan || hadits.translation || hadits.terjemahan || hadits.indonesian || '',
@@ -64,8 +104,14 @@ class GeminiService {
           source: hadits.Nama || hadits.source || hadits.sumber || hadits.kitab || '',
           narrator: hadits.Perawi || hadits.narrator || hadits.perawi || ''
         })),
-        hasRelevantHadits: relevantHadits.length > 0
+        hasRelevantHadits: relevantHadits.length > 0,
+        fromCache: false
       };
+
+      // 4. Cache the response
+      this.smartCache.saveResponse(question, result);
+      
+      return result;
       
     } catch (error) {
       console.error('Gemini API Error:', error);
@@ -148,13 +194,57 @@ class GeminiService {
     }
   }
 
-  // Get service status
+  // Get service status with cache and quota info
   getStatus() {
+    const cacheStats = this.smartCache.getStats();
+    const quotaStats = this.quotaManager.getStats();
+    const quotaStatus = this.quotaManager.getQuotaStatus();
+    
     return {
-      initialized: this.isInitialized,
+      isInitialized: this.isInitialized,
       hasApiKey: !!this.apiKey,
-      datasetStats: this.datasetService.getDatasetStats()
+      hasDataset: this.datasetService.isLoaded(),
+      datasetSize: this.datasetService.getDatasetSize(),
+      cache: {
+        totalEntries: cacheStats.totalEntries,
+        hitRate: cacheStats.hitRate,
+        totalHits: cacheStats.totalHits,
+        totalMisses: cacheStats.totalMisses,
+        cacheSize: cacheStats.cacheSize,
+        oldestEntry: cacheStats.oldestEntry,
+        newestEntry: cacheStats.newestEntry
+      },
+      quota: {
+        dailyUsed: quotaStats.dailyUsed,
+        dailyLimit: quotaStats.dailyLimit,
+        dailyRemaining: quotaStats.dailyRemaining,
+        minuteUsed: quotaStats.minuteUsed,
+        minuteLimit: quotaStats.minuteLimit,
+        status: quotaStatus.status,
+        statusMessage: quotaStatus.message,
+        resetTime: this.quotaManager.getTimeUntilReset()
+      }
     };
+  }
+
+  // Clear cache
+  clearCache() {
+    return this.smartCache.clearCache();
+  }
+
+  // Export cache data
+  exportCache() {
+    return this.smartCache.exportCache();
+  }
+
+  // Import cache data
+  importCache(cacheData) {
+    return this.smartCache.importCache(cacheData);
+  }
+
+  // Reset quota (for testing)
+  resetQuota() {
+    return this.quotaManager.resetQuota();
   }
 }
 

@@ -427,6 +427,11 @@ class DatasetService {
    isLoaded() {
      return this.haditsData.length > 0;
    }
+
+   // Get dataset size
+   getDatasetSize() {
+     return this.haditsData.length;
+   }
 }
 
 export default DatasetService;

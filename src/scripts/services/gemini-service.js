@@ -196,8 +196,8 @@ class GeminiService {
 
   // Get service status with cache and quota info
   getStatus() {
-    const cacheStats = this.smartCache.getStats();
-    const quotaStats = this.quotaManager.getStats();
+    const cacheStats = this.smartCache.getCacheStats();
+    const quotaStats = this.quotaManager.getUsageStats();
     const quotaStatus = this.quotaManager.getQuotaStatus();
     
     return {
@@ -207,21 +207,26 @@ class GeminiService {
       datasetSize: this.datasetService.getDatasetSize(),
       cache: {
         totalEntries: cacheStats.totalEntries,
+        validEntries: cacheStats.validEntries,
+        expiredEntries: cacheStats.expiredEntries,
+        cacheSize: cacheStats.cacheSize,
+        utilizationPercent: cacheStats.utilizationPercent,
         hitRate: cacheStats.hitRate,
         totalHits: cacheStats.totalHits,
         totalMisses: cacheStats.totalMisses,
-        cacheSize: cacheStats.cacheSize,
+        totalRequests: cacheStats.totalRequests,
         oldestEntry: cacheStats.oldestEntry,
         newestEntry: cacheStats.newestEntry
       },
       quota: {
-        dailyUsed: quotaStats.dailyUsed,
-        dailyLimit: quotaStats.dailyLimit,
-        dailyRemaining: quotaStats.dailyRemaining,
-        minuteUsed: quotaStats.minuteUsed,
-        minuteLimit: quotaStats.minuteLimit,
-        status: quotaStatus.status,
-        statusMessage: quotaStatus.message,
+        dailyUsed: quotaStats.daily.used,
+        dailyLimit: quotaStats.daily.total,
+        dailyRemaining: quotaStats.daily.remaining,
+        dailyPercentage: quotaStats.daily.percentage,
+        minuteUsed: quotaStats.minute.used,
+        minuteLimit: quotaStats.minute.total,
+        minuteRemaining: quotaStats.minute.remaining,
+        status: quotaStatus,
         resetTime: this.quotaManager.getTimeUntilReset()
       }
     };

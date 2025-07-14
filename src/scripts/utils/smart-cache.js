@@ -6,6 +6,7 @@
 class SmartCache {
   constructor() {
     this.cacheKey = 'islamic_qa_cache';
+    this.statsKey = 'islamic_qa_cache_stats';
     this.maxCacheSize = 200; // Simpan 200 Q&A
     this.cacheDuration = 7 * 24 * 60 * 60 * 1000; // 7 hari
     this.similarityThreshold = 0.7; // Threshold untuk similarity matching
@@ -42,6 +43,47 @@ class SmartCache {
   }
 
   /**
+   * Get/Update cache statistics
+   */
+  getStats() {
+    try {
+      const stored = localStorage.getItem(this.statsKey);
+      return stored ? JSON.parse(stored) : {
+        totalHits: 0,
+        totalMisses: 0,
+        exactHits: 0,
+        similarityHits: 0
+      };
+    } catch (error) {
+      console.error('Error reading cache stats:', error);
+      return { totalHits: 0, totalMisses: 0, exactHits: 0, similarityHits: 0 };
+    }
+  }
+
+  /**
+   * Update cache statistics
+   */
+  updateStats(type) {
+    try {
+      const stats = this.getStats();
+      
+      if (type === 'hit-exact') {
+        stats.totalHits++;
+        stats.exactHits++;
+      } else if (type === 'hit-similarity') {
+        stats.totalHits++;
+        stats.similarityHits++;
+      } else if (type === 'miss') {
+        stats.totalMisses++;
+      }
+      
+      localStorage.setItem(this.statsKey, JSON.stringify(stats));
+    } catch (error) {
+      console.error('Error updating cache stats:', error);
+    }
+  }
+
+  /**
    * Cari jawaban dari cache (exact match atau similarity)
    */
   findCachedResponse(question) {
@@ -51,6 +93,7 @@ class SmartCache {
     // 1. Exact match
     if (cache[normalizedQ]) {
       console.log('🎯 Cache HIT (exact):', normalizedQ);
+      this.updateStats('hit-exact');
       return {
         ...cache[normalizedQ],
         fromCache: true,
@@ -78,10 +121,12 @@ class SmartCache {
     
     if (bestMatch) {
       console.log(`🎯 Cache HIT (similarity: ${(highestScore * 100).toFixed(1)}%):`, normalizedQ);
+      this.updateStats('hit-similarity');
       return bestMatch;
     }
     
     console.log('❌ Cache MISS:', normalizedQ);
+    this.updateStats('miss');
     return null;
   }
 
@@ -185,10 +230,14 @@ class SmartCache {
     const cache = this.getCache();
     const entries = Object.entries(cache);
     const now = Date.now();
+    const stats = this.getStats();
     
     const validEntries = entries.filter(([_, data]) => 
       (now - data.timestamp) < this.cacheDuration
     );
+    
+    const totalRequests = stats.totalHits + stats.totalMisses;
+    const hitRate = totalRequests > 0 ? (stats.totalHits / totalRequests * 100).toFixed(1) : '0.0';
     
     return {
       totalEntries: entries.length,
@@ -199,7 +248,14 @@ class SmartCache {
       oldestEntry: validEntries.length > 0 ? 
         Math.min(...validEntries.map(([_, data]) => data.timestamp)) : null,
       newestEntry: validEntries.length > 0 ? 
-        Math.max(...validEntries.map(([_, data]) => data.timestamp)) : null
+        Math.max(...validEntries.map(([_, data]) => data.timestamp)) : null,
+      // Hit/Miss Statistics
+      totalHits: stats.totalHits,
+      totalMisses: stats.totalMisses,
+      exactHits: stats.exactHits,
+      similarityHits: stats.similarityHits,
+      hitRate: hitRate,
+      totalRequests: totalRequests
     };
   }
 
@@ -208,7 +264,8 @@ class SmartCache {
    */
   clearCache() {
     localStorage.removeItem(this.cacheKey);
-    console.log('🗑️ Cache cleared');
+    localStorage.removeItem(this.statsKey);
+    console.log('🗑️ Cache and stats cleared');
   }
 
   /**

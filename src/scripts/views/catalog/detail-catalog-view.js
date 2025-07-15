@@ -143,9 +143,9 @@ class DetailCatalogView {
                 border-radius: 6px;
                 font-size: 14px;
               ">
-                <option value="10">10 per halaman</option>
-                <option value="20">20 per halaman</option>
-                <option value="50">50 per halaman</option>
+                <option value="12">12 per halaman</option>
+                <option value="24" selected>24 per halaman</option>
+                <option value="48">48 per halaman</option>
               </select>
             </div>
           </div>
@@ -204,158 +204,245 @@ class DetailCatalogView {
     }
 
     return haditsData.map((hadits, index) => `
-      <div class="hadits-card" style="
+      <div class="hadits-card" 
+           data-hadits-id="${hadits.id}" 
+           data-hadits-index="${index}"
+           style="
         background: white;
-        border-radius: 16px;
-        padding: 32px;
-        margin-bottom: 24px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         border-left: 4px solid #D2B48C;
         transition: all 0.3s ease;
+        cursor: pointer;
       "
-      onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(0,0,0,0.15)'"
-      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.1)'">
+      onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.12)'"
+      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.08)'">
         
-        <!-- Header -->
         <div style="
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 20px;
-          padding-bottom: 16px;
-          border-bottom: 1px solid #f0f0f0;
         ">
-          <div>
+          <div style="flex: 1;">
             <h3 style="
               color: #2c3e50;
-              font-size: 1.2rem;
+              font-size: 1.1rem;
               font-weight: 600;
-              margin-bottom: 4px;
+              margin: 0;
+              line-height: 1.4;
             ">${hadits.Perawi || 'Hadits'}</h3>
             <p style="
               color: #6c757d;
-              font-size: 0.9rem;
-              margin: 0;
+              font-size: 0.85rem;
+              margin: 4px 0 0 0;
             ">ID: ${hadits.id || '-'} • ${hadits.Nama || 'Perawi'}</p>
           </div>
+          
           <div style="
             background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
             color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
             font-weight: 600;
+            min-width: 40px;
+            text-align: center;
           ">
             #${index + 1}
           </div>
         </div>
-
-        <!-- Arabic Text -->
-        ${hadits.Arab ? `
-          <div style="margin-bottom: 20px;">
-            <h4 style="
-              color: #2c3e50;
-              font-size: 1rem;
-              font-weight: 600;
-              margin-bottom: 12px;
-              display: flex;
-              align-items: center;
-              gap: 8px;
-            ">
-              <span style="color: #D2B48C;">📜</span> Teks Arab
-            </h4>
-            <p style="
-              font-family: 'Amiri', 'Times New Roman', serif;
-              font-size: 1.3rem;
-              line-height: 2;
-              color: #2c3e50;
-              text-align: right;
-              direction: rtl;
-              background: #f8f9fa;
-              padding: 20px;
-              border-radius: 12px;
-              border-right: 3px solid #D2B48C;
-            ">${hadits.Arab}</p>
-          </div>
-        ` : ''}
-
-        <!-- Indonesian Translation -->
-        ${hadits.Terjemahan ? `
-          <div style="margin-bottom: 20px;">
-            <h4 style="
-              color: #2c3e50;
-              font-size: 1rem;
-              font-weight: 600;
-              margin-bottom: 12px;
-              display: flex;
-              align-items: center;
-              gap: 8px;
-            ">
-              <span style="color: #D2B48C;">🇮🇩</span> Terjemahan Indonesia
-            </h4>
-            <p style="
-              font-size: 1.1rem;
-              line-height: 1.7;
-              color: #495057;
-              background: #f8f9fa;
-              padding: 20px;
-              border-radius: 12px;
-              border-left: 3px solid #D2B48C;
-            ">${hadits.Terjemahan}</p>
-          </div>
-        ` : ''}
-
-        <!-- Actions -->
-        <div style="
-          display: flex;
-          gap: 12px;
-          margin-top: 24px;
-          padding-top: 20px;
-          border-top: 1px solid #f0f0f0;
-        ">
-          <button 
-            class="btn-copy" 
-            data-hadits-id="${index}"
-            style="
-              background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
-              color: white;
-              border: none;
-              padding: 10px 20px;
-              border-radius: 8px;
-              font-size: 14px;
-              font-weight: 600;
-              cursor: pointer;
-              transition: all 0.3s;
-              box-shadow: 0 4px 15px rgba(210, 180, 140, 0.3);
-            "
-            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(210, 180, 140, 0.4)'"
-            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(210, 180, 140, 0.3)'"
-          >
-            📋 Salin Hadits
-          </button>
-          
-          <button 
-            class="btn-share" 
-            data-hadits-id="${index}"
-            style="
-              background: white;
-              color: #D2B48C;
-              border: 2px solid #D2B48C;
-              padding: 10px 20px;
-              border-radius: 8px;
-              font-size: 14px;
-              font-weight: 600;
-              cursor: pointer;
-              transition: all 0.3s;
-            "
-            onmouseover="this.style.backgroundColor='#D2B48C'; this.style.color='white'"
-            onmouseout="this.style.backgroundColor='white'; this.style.color='#D2B48C'"
-          >
-            📤 Bagikan
-          </button>
-        </div>
       </div>
     `).join('');
+  }
+
+  renderDetailedHaditsList(haditsData) {
+    if (!haditsData || haditsData.length === 0) {
+      return `
+        <div style="
+          text-align: center;
+          padding: 80px 40px;
+          background: white;
+          border-radius: 20px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        ">
+          <div style="
+            font-size: 4rem;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          ">📭</div>
+          <h3 style="
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+          ">Tidak ada hadits ditemukan</h3>
+          <p style="
+            color: #6c757d;
+            font-size: 1rem;
+            line-height: 1.5;
+          ">Coba ubah kata kunci pencarian atau periksa ejaan</p>
+        </div>
+      `;
+    }
+
+    return haditsData.map((hadits, index) => `
+       <div class="hadits-card" style="
+         background: white;
+         border-radius: 16px;
+         padding: 32px;
+         margin-bottom: 24px;
+         box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+         border-left: 4px solid #D2B48C;
+         transition: all 0.3s ease;
+       "
+       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(0,0,0,0.15)'"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.1)'">
+         
+         <!-- Header -->
+         <div style="
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           margin-bottom: 20px;
+           padding-bottom: 16px;
+           border-bottom: 1px solid #f0f0f0;
+         ">
+           <div>
+             <h3 style="
+               color: #2c3e50;
+               font-size: 1.2rem;
+               font-weight: 600;
+               margin-bottom: 4px;
+             ">${hadits.Perawi || 'Hadits'}</h3>
+             <p style="
+               color: #6c757d;
+               font-size: 0.9rem;
+               margin: 0;
+             ">ID: ${hadits.id || '-'} • ${hadits.Nama || 'Perawi'}</p>
+           </div>
+           <div style="
+             background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
+             color: white;
+             padding: 6px 12px;
+             border-radius: 20px;
+             font-size: 0.8rem;
+             font-weight: 600;
+           ">
+             #${index + 1}
+           </div>
+         </div>
+
+         <!-- Arabic Text -->
+         ${hadits.Arab ? `
+           <div style="margin-bottom: 20px;">
+             <h4 style="
+               color: #2c3e50;
+               font-size: 1rem;
+               font-weight: 600;
+               margin-bottom: 12px;
+               display: flex;
+               align-items: center;
+               gap: 8px;
+             ">
+               <span style="color: #D2B48C;">📜</span> Teks Arab
+             </h4>
+             <p style="
+               font-family: 'Amiri', 'Times New Roman', serif;
+               font-size: 1.3rem;
+               line-height: 2;
+               color: #2c3e50;
+               text-align: right;
+               direction: rtl;
+               background: #f8f9fa;
+               padding: 20px;
+               border-radius: 12px;
+               border-right: 3px solid #D2B48C;
+             ">${hadits.Arab}</p>
+           </div>
+         ` : ''}
+
+         <!-- Indonesian Translation -->
+         ${hadits.Terjemahan ? `
+           <div style="margin-bottom: 20px;">
+             <h4 style="
+               color: #2c3e50;
+               font-size: 1rem;
+               font-weight: 600;
+               margin-bottom: 12px;
+               display: flex;
+               align-items: center;
+               gap: 8px;
+             ">
+               <span style="color: #D2B48C;">🇮🇩</span> Terjemahan Indonesia
+             </h4>
+             <p style="
+               font-size: 1.1rem;
+               line-height: 1.7;
+               color: #495057;
+               background: #f8f9fa;
+               padding: 20px;
+               border-radius: 12px;
+               border-left: 3px solid #D2B48C;
+             ">${hadits.Terjemahan}</p>
+           </div>
+         ` : ''}
+
+         <!-- Actions -->
+         <div style="
+           display: flex;
+           gap: 12px;
+           margin-top: 24px;
+           padding-top: 20px;
+           border-top: 1px solid #f0f0f0;
+         ">
+           <button 
+             class="btn-copy" 
+             data-hadits-id="${index}"
+             style="
+               background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
+               color: white;
+               border: none;
+               padding: 10px 20px;
+               border-radius: 8px;
+               font-size: 14px;
+               font-weight: 600;
+               cursor: pointer;
+               transition: all 0.3s;
+               box-shadow: 0 4px 15px rgba(210, 180, 140, 0.3);
+             "
+             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(210, 180, 140, 0.4)'"
+             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(210, 180, 140, 0.3)'"
+           >
+             📋 Salin Hadits
+           </button>
+           
+           <button 
+             class="btn-share" 
+             data-hadits-id="${index}"
+             style="
+               background: white;
+               color: #D2B48C;
+               border: 2px solid #D2B48C;
+               padding: 10px 20px;
+               border-radius: 8px;
+               font-size: 14px;
+               font-weight: 600;
+               cursor: pointer;
+               transition: all 0.3s;
+             "
+             onmouseover="this.style.backgroundColor='#D2B48C'; this.style.color='white'"
+             onmouseout="this.style.backgroundColor='white'; this.style.color='#D2B48C'"
+           >
+             📤 Bagikan
+           </button>
+         </div>
+       </div>
+     `).join('');
   }
 
   renderPagination(currentPage, totalPages, totalItems) {
@@ -489,6 +576,194 @@ class DetailCatalogView {
     const endItem = Math.min(currentPage * itemsPerPage, totalItems);
     
     return `Menampilkan ${startItem}-${endItem} dari ${totalItems} hadits`;
+  }
+
+  renderHaditsModal(hadits) {
+    return `
+      <div id="hadits-modal" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+      ">
+        <div style="
+          background: white;
+          border-radius: 20px;
+          max-width: 800px;
+          width: 100%;
+          max-height: 90vh;
+          overflow-y: auto;
+          position: relative;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        ">
+          <!-- Close Button -->
+          <button id="close-modal" style="
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f8f9fa;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #6c757d;
+            transition: all 0.3s;
+            z-index: 10001;
+          "
+          onmouseover="this.style.backgroundColor='#e9ecef'; this.style.color='#495057'"
+          onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.color='#6c757d'">
+            ✕
+          </button>
+
+          <div style="padding: 40px;">
+            <!-- Header -->
+            <div style="
+              text-align: center;
+              margin-bottom: 32px;
+              padding-bottom: 24px;
+              border-bottom: 2px solid #f0f0f0;
+            ">
+              <div style="
+                font-size: 3rem;
+                margin-bottom: 16px;
+                background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+              ">📜</div>
+              <h2 style="
+                color: #2c3e50;
+                font-size: 1.8rem;
+                font-weight: 700;
+                margin-bottom: 8px;
+              ">${hadits.Perawi || 'Hadits'}</h2>
+              <p style="
+                color: #6c757d;
+                font-size: 1rem;
+                margin: 0;
+              ">ID: ${hadits.id || '-'} • ${hadits.Nama || 'Perawi'}</p>
+            </div>
+
+            <!-- Arabic Text -->
+            ${hadits.Arab ? `
+              <div style="margin-bottom: 32px;">
+                <h3 style="
+                  color: #2c3e50;
+                  font-size: 1.2rem;
+                  font-weight: 600;
+                  margin-bottom: 16px;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                ">
+                  <span style="color: #D2B48C;">📜</span> النص العربي
+                </h3>
+                <div style="
+                  font-family: 'Amiri', 'Times New Roman', serif;
+                  font-size: 1.4rem;
+                  line-height: 2.2;
+                  color: #2c3e50;
+                  text-align: right;
+                  direction: rtl;
+                  background: #f8f9fa;
+                  padding: 24px;
+                  border-radius: 12px;
+                  border-right: 4px solid #D2B48C;
+                ">${hadits.Arab}</div>
+              </div>
+            ` : ''}
+
+            <!-- Indonesian Translation -->
+            ${hadits.Terjemahan ? `
+              <div style="margin-bottom: 32px;">
+                <h3 style="
+                  color: #2c3e50;
+                  font-size: 1.2rem;
+                  font-weight: 600;
+                  margin-bottom: 16px;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                ">
+                  <span style="color: #D2B48C;">🇮🇩</span> Terjemahan Indonesia
+                </h3>
+                <div style="
+                  font-size: 1.1rem;
+                  line-height: 1.8;
+                  color: #495057;
+                  background: #f8f9fa;
+                  padding: 24px;
+                  border-radius: 12px;
+                  border-left: 4px solid #D2B48C;
+                ">${hadits.Terjemahan}</div>
+              </div>
+            ` : ''}
+
+            <!-- Actions -->
+            <div style="
+              display: flex;
+              gap: 12px;
+              justify-content: center;
+              margin-top: 32px;
+              padding-top: 24px;
+              border-top: 2px solid #f0f0f0;
+            ">
+              <button 
+                class="btn-copy-modal" 
+                style="
+                  background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
+                  color: white;
+                  border: none;
+                  padding: 12px 24px;
+                  border-radius: 8px;
+                  font-size: 14px;
+                  font-weight: 600;
+                  cursor: pointer;
+                  transition: all 0.3s;
+                  box-shadow: 0 4px 15px rgba(210, 180, 140, 0.3);
+                "
+                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(210, 180, 140, 0.4)'"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(210, 180, 140, 0.3)'"
+              >
+                📋 Salin Hadits
+              </button>
+              
+              <button 
+                class="btn-share-modal" 
+                style="
+                  background: white;
+                  color: #D2B48C;
+                  border: 2px solid #D2B48C;
+                  padding: 12px 24px;
+                  border-radius: 8px;
+                  font-size: 14px;
+                  font-weight: 600;
+                  cursor: pointer;
+                  transition: all 0.3s;
+                "
+                onmouseover="this.style.backgroundColor='#D2B48C'; this.style.color='white'"
+                onmouseout="this.style.backgroundColor='white'; this.style.color='#D2B48C'"
+              >
+                📤 Bagikan
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   showToast(message, type = 'success') {

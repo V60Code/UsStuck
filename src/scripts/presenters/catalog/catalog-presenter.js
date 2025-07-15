@@ -197,14 +197,14 @@ class CatalogPresenter {
       'muslim': 'Muslim',
       'tirmidzi': 'Tirmidzi',
       'abu-daud': 'Abu Daud',
-      'an-nasai': 'Nasai',
+      'nasai': 'Nasai',
       'ibn-majah': 'Ibnu Majah'
     };
     
     const narrator = narratorMap[categoryId];
     if (narrator) {
       // Navigate to detail catalog page
-      window.location.hash = `#/catalog/detail/${narrator}`;
+      window.location.hash = `#/catalog/${categoryId}`;
     } else {
       // Fallback to original behavior for unknown categories
       const items = this.model.getItemsByCategory(categoryId);

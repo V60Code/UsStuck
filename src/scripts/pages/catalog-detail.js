@@ -94,9 +94,9 @@ class CatalogDetailPage {
       'bukhari',
       'muslim', 
       'tirmidzi',
-      'abu daud',
-      'an-nasa\'i',
-      'ibn majah'
+      'abu-daud',
+      'nasai',
+      'ibn-majah'
     ];
     
     return validNarrators.includes(narratorId);
@@ -115,9 +115,9 @@ class CatalogDetailPage {
       'bukhari': 'Hadits Imam Bukhari',
       'muslim': 'Hadits Imam Muslim',
       'tirmidzi': 'Hadits Imam Tirmidzi',
-      'abu daud': 'Hadits Imam Abu Daud',
-      'an-nasa\'i': 'Hadits Imam An-Nasa\'i',
-      'ibn majah': 'Hadits Imam Ibn Majah'
+      'abu-daud': 'Hadits Imam Abu Daud',
+      'nasai': 'Hadits Imam An-Nasa\'i',
+      'ibn-majah': 'Hadits Imam Ibn Majah'
     };
     
     return narratorNames[narratorId] || 'Detail Katalog Hadits';
@@ -129,9 +129,9 @@ class CatalogDetailPage {
       'bukhari': 'Jelajahi koleksi hadits shahih dari Imam Bukhari yang telah diverifikasi oleh para ulama',
       'muslim': 'Temukan hadits-hadits shahih dari Imam Muslim dengan kualitas sanad yang terpercaya',
       'tirmidzi': 'Pelajari hadits-hadits dari Imam Tirmidzi dengan klasifikasi kualitas yang detail',
-      'abu daud': 'Akses koleksi hadits dari Imam Abu Daud yang fokus pada hadits-hadits hukum',
-      'an-nasa\'i': 'Baca hadits-hadits dari Imam An-Nasa\'i yang terkenal dengan kehati-hatiannya',
-      'ibn majah': 'Eksplorasi hadits dari Imam Ibn Majah yang melengkapi kitab-kitab hadits lainnya'
+      'abu-daud': 'Akses koleksi hadits dari Imam Abu Daud yang fokus pada hadits-hadits hukum',
+      'nasai': 'Baca hadits-hadits dari Imam An-Nasa\'i yang terkenal dengan kehati-hatiannya',
+      'ibn-majah': 'Eksplorasi hadits dari Imam Ibn Majah yang melengkapi kitab-kitab hadits lainnya'
     };
     
     return descriptions[narratorId] || 'Koleksi hadits dari perawi terpercaya';

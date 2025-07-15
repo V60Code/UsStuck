@@ -90,6 +90,14 @@ class DetailCatalogPresenter {
         this.handlePageChange(page);
       }
 
+      // Hadits card click
+      const haditsCard = event.target.closest('.hadits-card');
+      if (haditsCard) {
+        const haditsId = haditsCard.getAttribute('data-hadits-id');
+        const haditsIndex = haditsCard.getAttribute('data-hadits-index');
+        this.handleHaditsClick(haditsId, haditsIndex);
+      }
+
       // Copy hadits button
       const copyBtn = event.target.closest('.btn-copy');
       if (copyBtn) {
@@ -102,6 +110,36 @@ class DetailCatalogPresenter {
       if (shareBtn) {
         const haditsId = shareBtn.getAttribute('data-hadits-id');
         this.handleShareHadits(haditsId);
+      }
+
+      // Modal close button
+      const closeModalBtn = event.target.closest('#close-modal');
+      if (closeModalBtn) {
+        this.closeHaditsModal();
+      }
+
+      // Modal copy button
+      const copyModalBtn = event.target.closest('.btn-copy-modal');
+      if (copyModalBtn) {
+        this.handleCopyFromModal();
+      }
+
+      // Modal share button
+      const shareModalBtn = event.target.closest('.btn-share-modal');
+      if (shareModalBtn) {
+        this.handleShareFromModal();
+      }
+
+      // Close modal when clicking outside
+      if (event.target.id === 'hadits-modal') {
+        this.closeHaditsModal();
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        this.closeHaditsModal();
       }
     });
   }
@@ -193,6 +231,89 @@ class DetailCatalogPresenter {
         top: 0,
         behavior: 'smooth'
       });
+    }
+  }
+
+  handleHaditsClick(haditsId, haditsIndex) {
+    // Get the current hadits data
+    let haditsData;
+    
+    if (this.isSearchMode && this.currentSearchQuery) {
+      haditsData = this.model.searchInCurrentNarrator(this.currentSearchQuery);
+    } else {
+      haditsData = this.model.getCurrentPageData(this.currentNarrator);
+    }
+    
+    const hadits = haditsData[parseInt(haditsIndex)];
+    if (hadits) {
+      this.showHaditsModal(hadits);
+    }
+  }
+
+  showHaditsModal(hadits) {
+    // Store current hadits for modal actions
+    this.currentModalHadits = hadits;
+    
+    // Create and show modal
+    const modalHTML = this.view.renderHaditsModal(hadits);
+    const modalContainer = document.createElement('div');
+    modalContainer.innerHTML = modalHTML;
+    document.body.appendChild(modalContainer.firstElementChild);
+    
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeHaditsModal() {
+    const modal = document.getElementById('hadits-modal');
+    if (modal) {
+      modal.remove();
+      document.body.style.overflow = 'auto';
+      this.currentModalHadits = null;
+    }
+  }
+
+  handleCopyFromModal() {
+    if (this.currentModalHadits) {
+      const formattedText = this.formatHaditsForCopy(this.currentModalHadits);
+      this.copyToClipboard(formattedText);
+    }
+  }
+
+  handleShareFromModal() {
+    if (this.currentModalHadits) {
+      const formattedText = this.formatHaditsForShare(this.currentModalHadits);
+      this.shareHadits(formattedText, this.currentModalHadits);
+    }
+  }
+
+  copyToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => {
+        this.view.showToast('Hadits berhasil disalin ke clipboard!');
+      }).catch(() => {
+        this.fallbackCopyToClipboard(text);
+      });
+    } else {
+      this.fallbackCopyToClipboard(text);
+    }
+  }
+
+  shareHadits(text, hadits) {
+    if (navigator.share) {
+      navigator.share({
+        title: `Hadits ${hadits.Perawi || 'Hadits'}`,
+        text: text,
+        url: window.location.href
+      }).then(() => {
+        this.view.showToast('Hadits berhasil dibagikan!');
+      }).catch((error) => {
+        if (error.name !== 'AbortError') {
+          this.fallbackShare(text);
+        }
+      });
+    } else {
+      this.fallbackShare(text);
     }
   }
 

@@ -2,14 +2,14 @@ class DetailCatalogModel {
   constructor() {
     this.haditsData = [];
     this.currentPage = 1;
-    this.itemsPerPage = 10;
+    this.itemsPerPage = 24;
     this.currentNarrator = '';
     this.totalItems = 0;
   }
 
   async loadHaditsData() {
     try {
-      const response = await fetch('/src/scripts/data/hadits.json');
+      const response = await fetch('/hadits.json');
       this.haditsData = await response.json();
       return this.haditsData;
     } catch (error) {
@@ -22,8 +22,20 @@ class DetailCatalogModel {
     this.currentNarrator = narrator;
     this.currentPage = 1;
     
+    // Convert URL parameter to data format
+    const narratorMapping = {
+      'bukhari': 'Bukhari',
+      'muslim': 'Muslim',
+      'tirmidzi': 'Tirmidzi',
+      'abu-daud': 'Abu Daud',
+      'nasai': 'Nasai',
+      'ibn-majah': 'Ibnu Majah'
+    };
+    
+    const mappedNarrator = narratorMapping[narrator.toLowerCase()] || narrator;
+    
     const filteredData = this.haditsData.filter(hadits => 
-      hadits.Nama && hadits.Nama === narrator
+      hadits.Nama && hadits.Nama === mappedNarrator
     );
     
     this.totalItems = filteredData.length;
@@ -73,8 +85,20 @@ class DetailCatalogModel {
   searchInCurrentNarrator(query) {
     if (!this.currentNarrator) return [];
     
+    // Convert URL parameter to data format
+    const narratorMapping = {
+      'bukhari': 'Bukhari',
+      'muslim': 'Muslim',
+      'tirmidzi': 'Tirmidzi',
+      'abu-daud': 'Abu Daud',
+      'nasai': 'Nasai',
+      'ibn-majah': 'Ibnu Majah'
+    };
+    
+    const mappedNarrator = narratorMapping[this.currentNarrator.toLowerCase()] || this.currentNarrator;
+    
     const filteredData = this.haditsData.filter(hadits => {
-      if (hadits.Nama && hadits.Nama !== this.currentNarrator) {
+      if (hadits.Nama && hadits.Nama !== mappedNarrator) {
         return false;
       }
       

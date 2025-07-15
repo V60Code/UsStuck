@@ -3,18 +3,18 @@ class HomeModel {
     return [
       {
         id: 1,
-        question: "How to stay consistent in prayer (salah)?",
-        category: "Worship"
+        question: "Bagaimana cara konsisten dalam shalat?",
+        category: "Ibadah"
       },
       {
         id: 2,
-        question: "What are the best ways to manage finances according to Islam?",
-        category: "Finance"
+        question: "Apa cara terbaik mengelola keuangan menurut Islam?",
+        category: "Keuangan"
       },
       {
         id: 3,
-        question: "Finding a spouse: Islamic perspectives on modern dating.",
-        category: "Marriage"
+        question: "Mencari jodoh: perspektif Islam tentang pacaran modern.",
+        category: "Pernikahan"
       }
     ];
   }
@@ -24,22 +24,22 @@ class HomeModel {
       {
         id: 1,
         title: "Sahih al-Bukhari 1",
-        book: "Book of Revelation",
-        text: "Verily, actions are but by intentions, and every person will have only that which he intended...",
+        book: "Kitab Wahyu",
+        text: "Sesungguhnya amal perbuatan itu tergantung pada niatnya, dan setiap orang akan mendapat apa yang diniatkannya...",
         link: "#/hadith/bukhari-1"
       },
       {
         id: 2,
         title: "Sahih Muslim 55",
-        book: "Book of Faith",
-        text: "Islam is built upon five [pillars]: testifying that there is no god but Allah and that Muhammad is the Messenger of Allah, establishing prayer...",
+        book: "Kitab Iman",
+        text: "Islam dibangun atas lima [rukun]: bersaksi bahwa tidak ada tuhan selain Allah dan Muhammad adalah utusan Allah, mendirikan shalat...",
         link: "#/hadith/muslim-55"
       },
       {
         id: 3,
         title: "Jami` at-Tirmidhi 2516",
-        book: "Book on the Description of the Day of Judgement",
-        text: "Take advantage of five before five: your youth before your old age, your health before your sickness...",
+        book: "Kitab Sifat Hari Kiamat",
+        text: "Manfaatkanlah lima perkara sebelum lima perkara: masa mudamu sebelum masa tuamu, sehatmu sebelum sakitmu...",
         link: "#/hadith/tirmidhi-2516"
       }
     ];
@@ -49,29 +49,29 @@ class HomeModel {
     return [
       {
         id: 1,
-        title: "Advice for a new revert?",
+        title: "Saran untuk mualaf baru?",
         author: "Abdullah",
         replies: 15,
-        lastReply: "2h ago"
+        lastReply: "2 jam lalu"
       },
       {
         id: 2,
-        title: "Doubts about Riba in modern banking",
-        author: "Fatima",
+        title: "Keraguan tentang Riba dalam perbankan modern",
+        author: "Fatimah",
         replies: 28,
-        lastReply: "5h ago"
+        lastReply: "5 jam lalu"
       }
     ];
   }
 
   static getChatExample() {
     return {
-      userMessage: "What is the ruling on fasting for someone who is ill?",
+      userMessage: "Bagaimana hukum puasa bagi orang yang sedang sakit?",
       aiResponse: {
-        text: "Certainly. For someone who is ill, Islam provides a concession (rukhsah) to not fast. However, they are required to make up for it (qadha) on other days after they have recovered.",
+        text: "Tentu saja. Bagi orang yang sedang sakit, Islam memberikan keringanan (rukhsah) untuk tidak berpuasa. Namun, mereka diwajibkan untuk menggantinya (qadha) di hari-hari lain setelah sembuh.",
         source: {
-          title: "Source:",
-          text: "...So whoever among you is ill or on a journey [during them] - then an equal number of days [are to be made up]...",
+          title: "Sumber:",
+          text: "...Maka barang siapa di antara kamu sakit atau dalam perjalanan [lalu dia berbuka], maka [wajiblah baginya berpuasa] sebanyak hari yang ditinggalkannya itu...",
           reference: "QS. Al-Baqarah: 184"
         }
       }

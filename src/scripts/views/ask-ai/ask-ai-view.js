@@ -324,7 +324,7 @@ class AskAiView {
 
             /* Chat Input */
             .chat-input-container {
-              padding: 16px 24px;
+              padding: 8px;
               background: white;
               border-top: 1px solid #e1e8ed;
             }
@@ -332,12 +332,13 @@ class AskAiView {
             .input-wrapper {
               display: flex;
               align-items: flex-end;
-              gap: 12px;
+              gap: 16px;
               background: #f8f9fa;
               border: 1px solid #e1e8ed;
-              border-radius: 24px;
-              padding: 8px 8px 8px 20px;
+              border-radius: 28px;
+              padding: 16px 16px 16px 24px;
               transition: all 0.3s ease;
+              min-height: 60px;
             }
 
             .input-wrapper:focus-within {
@@ -353,11 +354,11 @@ class AskAiView {
               resize: none;
               outline: none;
               font-family: inherit;
-              font-size: 16px;
-              line-height: 1.5;
-              padding: 12px 0;
-              max-height: 120px;
-              min-height: 24px;
+              font-size: 18px;
+              line-height: 1.6;
+              padding: 8px 0;
+              max-height: 150px;
+              min-height: 28px;
             }
 
             .input-wrapper textarea::placeholder {
@@ -365,8 +366,8 @@ class AskAiView {
             }
 
             .send-btn {
-              width: 40px;
-              height: 40px;
+              width: 48px;
+              height: 48px;
               border-radius: 50%;
               border: none;
               background: linear-gradient(135deg, #556B2F, #6B8E23);
@@ -538,6 +539,17 @@ class AskAiView {
               .mobile-overlay {
                 display: none !important;
               }
+              
+              .chat-input-container {
+                padding: 4px 0px !important;
+              }
+              
+              .input-wrapper {
+                margin: 0 !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                padding: 16px 8px 16px 16px !important;
+              }
             }
 
             /* Responsive Design */
@@ -600,6 +612,17 @@ class AskAiView {
                 background: white;
                 padding: 16px;
                 border-bottom: 1px solid #e5e5e5;
+              }
+              
+              .chat-input-container {
+                padding: 4px 0px !important;
+              }
+              
+              .input-wrapper {
+                margin: 0 !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                padding: 16px 8px 16px 16px !important;
               }
             }
 

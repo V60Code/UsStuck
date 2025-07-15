@@ -242,14 +242,7 @@ We welcome contributions from the community! Please read our contributing guidel
 
 **University Affiliation**: Universitas Islam Negeri Sunan Kalijaga  
 **Address**: Jl. Laksda Adisucipto, Papringan, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281  
-**Phone**: +62 274 512840  
-**Email**: contact@usstuck.com
-
-### Social Media
-- 📘 [Facebook](https://facebook.com/usstuck)
-- 🐦 [Twitter](https://twitter.com/usstuck)
-- 📷 [Instagram](https://instagram.com/usstuck)
-- 📺 [YouTube](https://youtube.com/usstuck)
+**Email**: m.alfarizihabibullah@gmail.com
 
 ---
 

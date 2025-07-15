@@ -94,12 +94,21 @@ UsStuck/
    npm install
    ```
 
-3. **Start development server**
+3. **Setup Environment Variables**
+   ```bash
+   # Copy environment template
+   cp .env.example .env
+   
+   # Edit .env file and add your Gemini API key
+   # VITE_GEMINI_API_KEY=your_actual_api_key_here
+   ```
+
+4. **Start development server**
    ```bash
    npm run dev
    ```
 
-4. **Open your browser**
+5. **Open your browser**
    Navigate to `http://localhost:5173`
 
 ### Build for Production
@@ -215,6 +224,38 @@ npm run lint
 # Format code
 npm run format
 ```
+
+## 🔧 Environment Setup
+
+### Development Setup
+1. **Copy environment template:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Edit `.env` file and add your API key:**
+   ```env
+   VITE_GEMINI_API_KEY=your_actual_api_key_here
+   VITE_API_BASE_URL=https://generativelanguage.googleapis.com/v1/models
+   ```
+
+### Production Setup (Netlify)
+1. **Login to Netlify Dashboard**
+2. **Go to Site Settings → Environment Variables**
+3. **Add the following variables:**
+   - `VITE_GEMINI_API_KEY`: Your actual Gemini API key
+   - `VITE_API_BASE_URL`: `https://generativelanguage.googleapis.com/v1/models`
+
+### Getting Gemini API Key
+1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Create new API key
+3. Copy the key (starts with 'AIza...' and 39 characters long)
+
+### Security Notes
+- ✅ API keys are stored in environment variables
+- ✅ `.env` file is ignored by Git (never committed)
+- ✅ Production keys are managed by Netlify
+- ✅ No sensitive data in source code
 
 ## 🌐 Deployment
 

@@ -8,23 +8,31 @@ export const GEMINI_CONFIG = {
   temperature: CONFIG.GEMINI.TEMPERATURE
 };
 
-// Load API key dari config
+// Load API key dari environment variables dengan validasi
 export async function loadApiKey() {
   try {
-    // Langsung return API key dari config
-    const apiKey = CONFIG.GEMINI.API_KEY;
-    
-    if (apiKey && apiKey !== 'YOUR_API_KEY_HERE') {
-      console.log('✅ Gemini API key loaded successfully');
-      return apiKey;
-    } else {
-      console.error('❌ Invalid API key in config');
+    // Validasi API key menggunakan utility function
+    if (!validateApiKey()) {
       return null;
     }
+    
+    const apiKey = CONFIG.GEMINI.API_KEY;
+    console.log('✅ API key loaded and validated successfully');
+    return apiKey;
   } catch (error) {
     console.error('Error loading API key:', error);
     return null;
   }
+}
+
+// Function untuk check rate limit sebelum API call
+export function canMakeApiCall() {
+  return rateLimiter.canMakeRequest();
+}
+
+// Function untuk log API usage
+export function logGeminiApiCall(success, responseTime) {
+  logApiUsage('gemini-api', success, responseTime);
 }
 
 // Template prompt untuk konteks Islamic dengan hadits

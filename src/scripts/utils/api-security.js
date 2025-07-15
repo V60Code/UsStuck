@@ -2,10 +2,11 @@
 
 /**
  * Validasi format dan keberadaan API key
+ * @param {string} [key] - API key to validate (optional, will use env var if not provided)
  * @returns {boolean} - true jika API key valid
  */
-export const validateApiKey = () => {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+export const validateApiKey = (key) => {
+  const apiKey = key || import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
     console.error('❌ GEMINI API KEY not found in environment variables');

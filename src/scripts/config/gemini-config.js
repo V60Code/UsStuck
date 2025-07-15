@@ -1,4 +1,5 @@
 import CONFIG from '../config.js';
+import { validateApiKey, rateLimiter, logApiUsage } from '../utils/api-security.js';
 
 // Konfigurasi Gemini API - Updated with correct endpoints
 export const GEMINI_CONFIG = {
@@ -11,12 +12,14 @@ export const GEMINI_CONFIG = {
 // Load API key dari environment variables dengan validasi
 export async function loadApiKey() {
   try {
+    const apiKey = CONFIG.GEMINI.API_KEY;
+    
     // Validasi API key menggunakan utility function
-    if (!validateApiKey()) {
+    if (!validateApiKey(apiKey)) {
+      console.error('❌ Invalid or missing API key');
       return null;
     }
     
-    const apiKey = CONFIG.GEMINI.API_KEY;
     console.log('✅ API key loaded and validated successfully');
     return apiKey;
   } catch (error) {

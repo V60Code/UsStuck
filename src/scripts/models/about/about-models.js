@@ -34,41 +34,41 @@ class AboutModel {
     return [
       {
         id: 1,
-        name: "Ahmad Alfarizi",
-        role: "Lead Developer & Islamic Scholar",
-        description: "Passionate about combining technology with Islamic education. Graduated from Computer Science and has deep knowledge in Islamic studies.",
-        expertise: ["Full-Stack Development", "AI/ML", "Islamic Jurisprudence", "Arabic Language"],
+        name: "Muhammad Alfarizi Habibullah",
+        role: "Frontend & Backend Developer",
+        description: "Passionate full-stack developer with expertise in modern web technologies and backend systems. Dedicated to creating seamless user experiences.",
+        expertise: ["Frontend Development", "Backend Development", "JavaScript", "Node.js", "React"],
         image: "/images/developer-1.svg",
         social: {
-          github: "https://github.com/alfarizi",
-          linkedin: "https://linkedin.com/in/ahmad-alfarizi",
-          email: "ahmad@usstuck.com"
+          github: "https://github.com/V60Code",
+          linkedin: "https://www.linkedin.com/in/m-alfarizi-habibullah/",
+          email: "m.alfarizihabibullah@gmail.com"
         }
       },
       {
         id: 2,
-        name: "Fatimah Rahman",
-        role: "AI Researcher & Content Curator",
-        description: "Specializes in Natural Language Processing and Islamic content curation. Ensures all AI responses maintain religious accuracy.",
-        expertise: ["Machine Learning", "NLP", "Islamic Studies", "Content Strategy"],
+        name: "Ahmad Mushthofa Kamal",
+        role: "Team Leader",
+        description: "Experienced team leader with strong project management skills and technical expertise. Specializes in Linux administration, DevOps, and system architecture.",
+        expertise: ["Linux Administrator", "DevOps", "Project Manager", "System Architecture"],
         image: "/images/developer-2.svg",
         social: {
-          github: "https://github.com/fatimahrahman",
-          linkedin: "https://linkedin.com/in/fatimah-rahman",
-          email: "fatimah@usstuck.com"
+          github: "https://github.com/muzzto",
+          linkedin: "https://www.linkedin.com/in/a-mushthofa/",
+          email: "am240755@gmail.com"
         }
       },
       {
         id: 3,
-        name: "Abdullah Hassan",
-        role: "Backend Developer & Database Architect",
-        description: "Expert in building scalable systems and managing large Islamic text databases. Focuses on performance and reliability.",
-        expertise: ["Backend Development", "Database Design", "System Architecture", "DevOps"],
+        name: "Zhafran Pradistyatama Kuncoro",
+        role: "UI/UX Designer",
+        description: "Creative UI/UX designer focused on creating intuitive and beautiful user interfaces. Ensures optimal user experience across all platforms.",
+        expertise: ["UI Design", "UX Research", "Prototyping", "User Testing", "Design Systems"],
         image: "/images/developer-3.svg",
         social: {
-          github: "https://github.com/abdullahhassan",
-          linkedin: "https://linkedin.com/in/abdullah-hassan",
-          email: "abdullah@usstuck.com"
+          github: "https://github.com/NorpajSucces",
+          linkedin: "https://www.linkedin.com/in/zhafran-kuncoro",
+          email: "zhafrankuncoro@gmail.com"
         }
       }
     ];
@@ -137,8 +137,8 @@ class AboutModel {
   static getContact() {
     return {
       email: "contact@usstuck.com",
-      phone: "+1 (555) 123-4567",
-      address: "123 Islamic Center St, Education City, EC 12345",
+      phone: "+62 274 512840",
+      address: "Jl. Laksda Adisucipto, Papringan, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281",
       social: {
         facebook: "https://facebook.com/usstuck",
         twitter: "https://twitter.com/usstuck",

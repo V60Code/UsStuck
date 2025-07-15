@@ -221,7 +221,6 @@ class AboutView {
     return `
       ${this.createHeroSection(data.aboutInfo)}
       ${this.createMissionSection(data.aboutInfo)}
-      ${this.createValuesSection(data.aboutInfo.values)}
       ${this.createStatsSection(data.stats)}
       ${this.createDevelopersSection(data.developers)}
       ${this.createFeaturesSection(data.features)}

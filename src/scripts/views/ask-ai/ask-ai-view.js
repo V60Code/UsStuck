@@ -3,113 +3,395 @@ class AskAiView {
     this.container = null;
   }
 
+  afterRender() {
+    this.setupEventListeners();
+    this.autoResizeTextarea();
+    this.setupMobileSidebar();
+  }
+
+  setupMobileSidebar() {
+    // Wait for DOM to be ready
+    setTimeout(() => {
+      const toggleBtn = document.getElementById('mobile-sidebar-toggle');
+      const overlay = document.getElementById('mobile-overlay');      
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.toggleMobileSidebar();
+        });
+        
+        toggleBtn.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          this.toggleMobileSidebar();
+        });
+      }
+      
+      if (overlay) {
+        overlay.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.toggleMobileSidebar();
+        });
+      }
+    }, 200);
+  }
+
+  setupEventListeners() {
+    // Add any other event listeners here
+  }
+
+  autoResizeTextarea() {
+    const textarea = this.getQuestionInput();
+    if (textarea) {
+      textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+      });
+    }
+  }
+
   render() {
     return `
-      <div class="container">
-        <div class="section">
-          <div class="ask-ai-header" style="text-align: center; margin-bottom: 48px;">
-            <div style="font-size: 4rem; margin-bottom: 24px;">🤖</div>
-            <h1 class="section-title">Ask AI Islamic Assistant</h1>
-            <p class="section-subtitle">
-              Tanyakan pertanyaan tentang Islam dan dapatkan jawaban berdasarkan Al-Quran dan Hadits
-            </p>
-            
-            <!-- AI Status Display -->
-            <div class="ai-status-container">
-              <div id="ai-status" class="ai-status">
-                <div class="status-indicator unknown">
-                  <span class="status-dot"></span>
-                  <span class="status-text">⚪ Memuat...</span>
-                </div>
-                <div class="status-details">
-                  <div>📊 Cache Hit: 0%</div>
-                  <div>📈 Quota: 0/1500</div>
+        <div class="chat-layout">
+          <!-- Main Chat Area -->
+          <div class="chat-main">
+            <!-- Sidebar -->
+            <div class="chat-sidebar" id="chat-sidebar">
+              <div class="sidebar-header">
+                <button class="new-chat-btn">
+                  <span class="plus-icon">+</span>
+                  Chat Baru
+                </button>
+              </div>
+              <div class="chat-history">
+                <div class="history-section">
+                  <h3>Diskusi Terbaru</h3>
+                  <div class="chat-item active">
+                    <div class="chat-preview">Apa tujuan hidup seorang...</div>
+                  </div>
+                  <div class="chat-item">
+                    <div class="chat-preview">Hukum Puasa Untuk orang y...</div>
+                  </div>
+                  <div class="chat-item">
+                    <div class="chat-preview">Mengapa kita harus berba...</div>
+                  </div>
+                  <div class="chat-item">
+                    <div class="chat-preview">Apa itu hadits dan kenapa pe...</div>
+                  </div>
+                  <div class="chat-item">
+                    <div class="chat-preview">Perbedaan antara hadits...</div>
+                  </div>
+                  <div class="chat-item">
+                    <div class="chat-preview">Apa fungsi hadits terhadap...</div>
+                  </div>
+                  <div class="chat-item">
+                    <div class="chat-preview">Mengapa hadits diperlukan?</div>
+                  </div>
                 </div>
               </div>
-              <button id="status-toggle" class="status-toggle-btn" title="Toggle detailed status">
-                📊
+            </div>
+
+            <!-- Mobile Overlay -->
+            <div class="mobile-overlay" id="mobile-overlay"></div>
+
+            <!-- Chat Content Area -->
+            <div class="chat-content">
+          <div class="chat-header">
+            <button class="mobile-sidebar-toggle" id="mobile-sidebar-toggle">
+                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                   <line x1="3" y1="6" x2="21" y2="6"></line>
+                   <line x1="3" y1="12" x2="21" y2="12"></line>
+                   <line x1="3" y1="18" x2="21" y2="18"></line>
+                 </svg>
+               </button>
+            <div class="chat-title">
+              <div class="avatar-container">
+                <div class="ai-avatar">AI</div>
+              </div>
+              <div class="header-content">
+                <h2>Ask AI Islamic Assistant</h2>
+                <p>Tanyakan pertanyaan tentang Islam</p>
+              </div>
+            </div>
+            <div class="chat-actions">
+              <div class="user-profile">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23E8F4FD'/%3E%3Cpath d='M50 30c-8 0-15 7-15 15s7 15 15 15 15-7 15-15-7-15-15-15zm0 35c-12 0-22 6-22 13v7h44v-7c0-7-10-13-22-13z' fill='%23B8E0FF'/%3E%3C/svg%3E" alt="User" class="user-avatar">
+                <span class="username">Azzahra</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="chat-messages" class="chat-messages">
+            <div class="message ai">
+              <div class="message-avatar ai">AI</div>
+              <div class="message-content ai">
+                <p>Assalamu'alaikum! Saya adalah asisten AI untuk pertanyaan seputar Islam. Silakan tanyakan apa saja tentang ibadah, akhlak, atau ajaran Islam lainnya.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Input -->
+          <div class="chat-input-container">
+            <div class="input-wrapper">
+              <textarea 
+                id="question-input" 
+                placeholder="Tanya pertanyaan mu disini..."
+                rows="1"
+              ></textarea>
+              <button id="send-button" class="send-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
               </button>
             </div>
-            
-            <!-- Detailed Status Panel (Hidden by default) -->
-            <div id="status-panel" class="status-panel" style="display: none;">
-              <div class="status-panel-header">
-                <h3>📊 AI System Status</h3>
-                <div class="status-actions">
-                  <button id="clear-cache-btn" class="action-btn">🗑️ Clear Cache</button>
-                  <button id="export-cache-btn" class="action-btn">📤 Export Cache</button>
-                </div>
-              </div>
-              <div id="status-details" class="status-panel-content">
-                Loading status...
-              </div>
-            </div>
           </div>
-
-          <div class="chat-container">
-            <div id="chat-messages" class="chat-messages">
-              <div class="message ai">
-                <div class="message-avatar ai">AI</div>
-                <div class="message-content ai">
-                  <p>Assalamu'alaikum! Saya adalah asisten AI untuk pertanyaan seputar Islam. Silakan tanyakan apa saja tentang ibadah, akhlak, atau ajaran Islam lainnya.</p>
-                  <div class="message-source">
-                    <div class="source-title">Contoh pertanyaan:</div>
-                    <div class="source-text">• Bagaimana cara sholat yang benar?</div>
-                    <div class="source-text">• Kapan waktu puasa Ramadan?</div>
-                    <div class="source-text">• Apa itu zakat dan siapa yang wajib membayar?</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Modern Chat Input Container -->
-            <div class="modern-chat-input">
-              <div class="input-wrapper">
-                <div class="input-container">
-                  <textarea 
-                    id="question-input" 
-                    placeholder="Ketik pertanyaan Anda tentang Islam..."
-                    rows="1"
-                  ></textarea>
-                  <div class="input-actions">
-                    <button id="send-button" class="send-btn" title="Kirim pesan">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22,2 15,22 11,13 2,9"></polygon>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="chat-controls">
-                  <button id="clear-button" class="clear-btn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polyline points="3,6 5,6 21,6"></polyline>
-                      <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"></path>
-                    </svg>
-                    Hapus Percakapan
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+        </div>
+      </div>
+    </div>
 
           <style>
-            .chat-container {
-              max-width: 800px;
-              margin: 0 auto;
+            .chat-layout {
+              height: 100vh;
+              background: #f5f5f5;
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            }
+
+            /* Main Chat Container */
+            .chat-main {
+              display: flex;
+              height: 100vh;
+              position: relative;
+            }
+
+            /* Sidebar Styles */
+            .chat-sidebar {
+              width: 280px;
+              background: #2c3e50;
+              color: white;
+              display: flex;
+              flex-direction: column;
+              border-right: 1px solid #34495e;
+            }
+
+            /* Chat Content Area */
+            .chat-content {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
               background: white;
-              border-radius: 16px;
-              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+
+            .sidebar-header {
+              padding: 20px;
+              border-bottom: 1px solid #34495e;
+            }
+
+            .new-chat-btn {
+              width: 100%;
+              background: #556B2F;
+              color: white;
+              border: none;
+              padding: 12px 16px;
+              border-radius: 8px;
+              font-size: 14px;
+              font-weight: 500;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              transition: background 0.2s;
+            }
+
+            .new-chat-btn:hover {
+              background: #6B8E23;
+            }
+
+            .plus-icon {
+              font-size: 18px;
+              font-weight: bold;
+            }
+
+            .chat-history {
+              flex: 1;
+              overflow-y: auto;
+              padding: 0;
+            }
+
+            .history-section h3 {
+              padding: 16px 20px 8px;
+              margin: 0;
+              font-size: 14px;
+              color: #bdc3c7;
+              font-weight: 500;
+            }
+
+            .chat-item {
+              padding: 12px 20px;
+              cursor: pointer;
+              border-left: 3px solid transparent;
+              transition: all 0.2s;
+            }
+
+            .chat-item:hover {
+              background: #34495e;
+            }
+
+            .chat-item.active {
+              background: #34495e;
+              border-left-color: #556B2F;
+            }
+
+            .chat-preview {
+              font-size: 14px;
+              color: #ecf0f1;
+              white-space: nowrap;
               overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+
+
+            .chat-header {
+              padding: 16px 24px;
+              border-bottom: 1px solid #e1e8ed;
+              background: white;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+
+            .chat-title {
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            }
+
+            .avatar-container {
+              position: relative;
+            }
+
+            .ai-avatar {
+              width: 40px;
+              height: 40px;
+              background: linear-gradient(135deg, #556B2F, #6B8E23);
+              color: white;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-weight: 600;
+              font-size: 14px;
+            }
+
+            .chat-info h2 {
+              margin: 0;
+              font-size: 18px;
+              color: #2c3e50;
+              font-weight: 600;
+            }
+
+            .chat-info p {
+              margin: 2px 0 0;
+              font-size: 14px;
+              color: #7f8c8d;
+            }
+
+            .user-profile {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+            }
+
+            .user-avatar {
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+            }
+
+            .username {
+              font-size: 14px;
+              color: #2c3e50;
+              font-weight: 500;
             }
 
             .chat-messages {
-              max-height: 500px;
+              flex: 1;
               overflow-y: auto;
               padding: 24px;
-              background: #fafafa;
+              background: #f8f9fa;
             }
 
+            /* Chat Input */
+            .chat-input-container {
+              padding: 16px 24px;
+              background: white;
+              border-top: 1px solid #e1e8ed;
+            }
+
+            .input-wrapper {
+              display: flex;
+              align-items: flex-end;
+              gap: 12px;
+              background: #f8f9fa;
+              border: 1px solid #e1e8ed;
+              border-radius: 24px;
+              padding: 8px 8px 8px 20px;
+              transition: all 0.3s ease;
+            }
+
+            .input-wrapper:focus-within {
+              border-color: #556B2F;
+              background: white;
+              box-shadow: 0 0 0 3px rgba(85, 107, 47, 0.1);
+            }
+
+            .input-wrapper textarea {
+              flex: 1;
+              border: none;
+              background: transparent;
+              resize: none;
+              outline: none;
+              font-family: inherit;
+              font-size: 16px;
+              line-height: 1.5;
+              padding: 12px 0;
+              max-height: 120px;
+              min-height: 24px;
+            }
+
+            .input-wrapper textarea::placeholder {
+              color: #95a5a6;
+            }
+
+            .send-btn {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              border: none;
+              background: linear-gradient(135deg, #556B2F, #6B8E23);
+              color: white;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: all 0.3s ease;
+              box-shadow: 0 2px 8px rgba(85, 107, 47, 0.3);
+            }
+
+            .send-btn:hover:not(:disabled) {
+              transform: translateY(-2px);
+              box-shadow: 0 4px 12px rgba(85, 107, 47, 0.4);
+            }
+
+            .send-btn:disabled {
+              background: #bdc3c7;
+              cursor: not-allowed;
+              transform: none;
+              box-shadow: none;
+            }
+
+            /* Message Styles */
             .message {
               display: flex;
               gap: 12px;
@@ -191,149 +473,140 @@ class AskAiView {
               margin-bottom: 2px;
             }
 
-            /* Modern Chat Input Styles */
-            .modern-chat-input {
-              background: white;
-              border-top: 1px solid #e5e5e5;
-              padding: 20px 24px;
-            }
-
-            .input-wrapper {
-              max-width: 100%;
-            }
-
-            .input-container {
-              display: flex;
-              align-items: flex-end;
-              gap: 12px;
-              background: #f8f9fa;
-              border: 2px solid #e5e5e5;
-              border-radius: 24px;
-              padding: 8px 8px 8px 20px;
+            /* Mobile Sidebar Toggle */
+            .mobile-sidebar-toggle {
+              display: none;
+              background: rgba(85, 107, 47, 0.1);
+              border: 2px solid #556B2F;
+              color: #556B2F;
+              cursor: pointer;
+              padding: 8px;
+              border-radius: 6px;
               transition: all 0.3s ease;
+              margin-right: 12px;
+              z-index: 1001;
               position: relative;
+              min-width: 44px;
+              min-height: 44px;
+              pointer-events: auto;
+              touch-action: manipulation;
+              -webkit-tap-highlight-color: rgba(85, 107, 47, 0.3);
             }
 
-            .input-container:focus-within {
+            .mobile-sidebar-toggle:hover {
+              background: rgba(85, 107, 47, 0.2);
+              border-color: #6B8E23;
+            }
+
+            .mobile-sidebar-toggle:active {
+              background: rgba(85, 107, 47, 0.3);
+              transform: scale(0.95);
               border-color: #556B2F;
-              background: white;
-              box-shadow: 0 0 0 3px rgba(85, 107, 47, 0.1);
             }
 
-            .input-container textarea {
+            .header-content {
               flex: 1;
-              border: none;
-              background: transparent;
-              resize: none;
-              outline: none;
-              font-family: inherit;
-              font-size: 16px;
-              line-height: 1.5;
-              padding: 12px 0;
-              max-height: 120px;
-              min-height: 24px;
             }
 
-            .input-container textarea::placeholder {
-              color: #999;
+            /* Mobile Overlay */
+            .mobile-overlay {
+              display: none;
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: rgba(0, 0, 0, 0.5);
+              z-index: 999;
+              opacity: 0;
+              transition: opacity 0.3s ease;
             }
 
-            .input-actions {
-              display: flex;
-              align-items: center;
-              gap: 8px;
-            }
-
-            .send-btn {
-              width: 44px;
-              height: 44px;
-              border-radius: 50%;
-              border: none;
-              background: linear-gradient(135deg, #556B2F, #6B8E23);
-              color: white;
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              transition: all 0.3s ease;
-              box-shadow: 0 2px 8px rgba(85, 107, 47, 0.3);
-            }
-
-            .send-btn:hover:not(:disabled) {
-              transform: translateY(-2px);
-              box-shadow: 0 4px 12px rgba(85, 107, 47, 0.4);
-            }
-
-            .send-btn:active {
-              transform: translateY(0);
-            }
-
-            .send-btn:disabled {
-              background: #ccc;
-              cursor: not-allowed;
-              transform: none;
-              box-shadow: none;
-            }
-
-            .chat-controls {
-              display: flex;
-              justify-content: center;
-              margin-top: 16px;
-            }
-
-            .clear-btn {
-              display: flex;
-              align-items: center;
-              gap: 8px;
-              background: none;
-              border: 1px solid #e5e5e5;
-              color: #666;
-              padding: 8px 16px;
-              border-radius: 20px;
-              font-size: 14px;
-              cursor: pointer;
-              transition: all 0.3s ease;
-            }
-
-            .clear-btn:hover {
-              background: #f8f9fa;
-              border-color: #ccc;
-              color: #333;
-            }
-
-            .clear-btn svg {
-              opacity: 0.7;
+            /* Desktop Design - Ensure sidebar is always visible */
+            @media (min-width: 769px) {
+              .chat-sidebar {
+                position: relative;
+                left: 0;
+                width: 280px;
+                height: 100vh;
+              }
+              
+              .mobile-sidebar-toggle {
+                display: none !important;
+              }
+              
+              .mobile-overlay {
+                display: none !important;
+              }
             }
 
             /* Responsive Design */
             @media (max-width: 768px) {
-              .chat-container {
-                margin: 0 -16px;
-                border-radius: 0;
+              .chat-main {
+                overflow: hidden;
               }
-
-              .modern-chat-input {
-                padding: 16px 20px;
+              
+              .mobile-overlay {
+                display: block;
+                pointer-events: none;
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                transition: opacity 0.3s ease;
               }
-
-              .input-container {
-                padding: 6px 6px 6px 16px;
+              
+              .chat-sidebar {
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 280px;
+                height: 100%;
+                z-index: 1000;
+                transition: left 0.3s ease;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+                background: #2c3e50;
               }
-
-              .send-btn {
-                width: 40px;
-                height: 40px;
+              
+              .chat-sidebar.mobile-open {
+                left: 0;
               }
-
-              .message-content.user {
-                max-width: 85%;
+              
+              .chat-sidebar.mobile-open ~ .mobile-overlay {
+                opacity: 1;
+                pointer-events: auto;
+              }
+              
+              .chat-content {
+                width: 100%;
+                height: 100vh;
+              }
+              
+              .mobile-sidebar-toggle {
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+              }
+              
+              .chat-header {
+                display: flex;
+                align-items: center;
+                position: relative;
+                z-index: 1001;
+                background: white;
+                padding: 16px;
+                border-bottom: 1px solid #e5e5e5;
               }
             }
 
             /* Auto-resize textarea */
-             .input-container textarea {
-               overflow-y: hidden;
-             }
+            .input-wrapper textarea {
+              overflow-y: hidden;
+            }
 
              /* Toast Notification Styles */
              .toast {
@@ -616,59 +889,60 @@ class AskAiView {
             
             ${hasHadits ? `
               <div class="hadits-section" style="margin-top: 16px; padding: 16px; background: #f8f9fa; border-left: 4px solid #556B2F; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                <div class="hadits-dropdown-header" 
-                     style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-weight: 600; color: #556B2F; margin-bottom: 12px; font-size: 14px; padding: 8px; background: white; border-radius: 6px; border: 1px solid #e9ecef; transition: all 0.3s ease;"
-                     onmouseover="this.style.backgroundColor = '#f8f9fa'; this.style.borderColor = '#556B2F';"
-                     onmouseout="this.style.backgroundColor = 'white'; this.style.borderColor = '#e9ecef';"
-                     onclick="this.parentElement.querySelector('.hadits-dropdown-content').style.display = this.parentElement.querySelector('.hadits-dropdown-content').style.display === 'none' ? 'block' : 'none'; this.querySelector('.dropdown-arrow').style.transform = this.parentElement.querySelector('.hadits-dropdown-content').style.display === 'none' ? 'rotate(0deg)' : 'rotate(180deg)';">
-                  <span>📖 Hadits yang Digunakan (${response.haditsUsed.length} hadits)</span>
-                  <span class="dropdown-arrow" style="transition: transform 0.3s ease; font-size: 12px;">▼</span>
+                <div style="font-weight: 600; color: #556B2F; margin-bottom: 12px; font-size: 14px;">
+                  📖 Hadits yang Digunakan:
                 </div>
-                <div class="hadits-dropdown-content" style="display: none;">
-                  ${response.haditsUsed.map((hadits, index) => {
-                    // Get the hadits text - use text field which contains the translation
-                    const haditsText = hadits.text || hadits.translation || hadits.terjemahan || '';
-                    const arabicText = hadits.arabic || hadits.Arab || hadits.arab || '';
-                    
-                    return `
-                      <div class="hadits-item" style="margin-bottom: 12px; padding: 12px; background: white; border-radius: 6px; border: 1px solid #e9ecef;">
-                        ${arabicText ? `
-                          <div class="hadits-arabic" style="font-family: 'Amiri', 'Times New Roman', serif; font-size: 16px; line-height: 1.8; text-align: right; margin-bottom: 8px; color: #2c3e50; direction: rtl;">
-                            ${arabicText}
-                          </div>
-                        ` : ''}
-                        
-                        ${haditsText ? `
-                          <div class="hadits-translation" style="font-style: italic; margin-bottom: 8px; color: #34495e; line-height: 1.6;">
-                            "${haditsText}"
-                          </div>
-                        ` : ''}
-                        
-                        <div class="hadits-metadata" style="border-top: 1px solid #eee; padding-top: 8px; margin-top: 8px;">
-                          ${hadits.source ? `
-                            <div class="hadits-source" style="font-size: 12px; color: #666; margin-bottom: 4px;">
-                              📚 <strong>Sumber:</strong> ${hadits.source}
+                ${response.haditsUsed.map((hadits, index) => {
+                  // Get the hadits text - use text field which contains the translation
+                  const haditsText = hadits.text || hadits.translation || hadits.terjemahan || '';
+                  const arabicText = hadits.arabic || hadits.Arab || hadits.arab || '';
+                  const haditsId = `hadits-${Date.now()}-${index}`;
+                  
+                  return `
+                    <div class="hadits-dropdown-item" style="margin-bottom: 8px;">
+                      <div class="hadits-dropdown-header" 
+                           style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-weight: 500; color: #556B2F; font-size: 13px; padding: 8px; background: white; border-radius: 6px; border: 1px solid #e9ecef; transition: all 0.3s ease;"
+                           onmouseover="this.style.backgroundColor = '#f8f9fa'; this.style.borderColor = '#556B2F';"
+                           onmouseout="this.style.backgroundColor = 'white'; this.style.borderColor = '#e9ecef';"
+                           onclick="const content = document.getElementById('${haditsId}'); const arrow = this.querySelector('.dropdown-arrow'); if(content.style.display === 'none' || content.style.display === '') { content.style.display = 'block'; arrow.style.transform = 'rotate(180deg)'; } else { content.style.display = 'none'; arrow.style.transform = 'rotate(0deg)'; }">
+                        <span>📜 Hadits ${index + 1}</span>
+                        <span class="dropdown-arrow" style="transition: transform 0.3s ease; font-size: 12px;">▼</span>
+                      </div>
+                      <div id="${haditsId}" class="hadits-dropdown-content" style="display: none; margin-top: 4px;">
+                        <div class="hadits-item" style="padding: 12px; background: white; border-radius: 6px; border: 1px solid #e9ecef;">
+                          ${arabicText ? `
+                            <div class="hadits-arabic" style="font-family: 'Amiri', 'Times New Roman', serif; font-size: 16px; line-height: 1.8; text-align: right; margin-bottom: 8px; color: #2c3e50; direction: rtl;">
+                              ${arabicText}
                             </div>
                           ` : ''}
-                          ${hadits.narrator ? `
-                            <div class="hadits-narrator" style="font-size: 12px; color: #666;">
-                              👤 <strong>Perawi:</strong> ${hadits.narrator}
+                          
+                          ${haditsText ? `
+                            <div class="hadits-translation" style="font-style: italic; margin-bottom: 8px; color: #34495e; line-height: 1.6;">
+                              "${haditsText}"
                             </div>
                           ` : ''}
+                          
+                          <div class="hadits-metadata" style="border-top: 1px solid #eee; padding-top: 8px; margin-top: 8px;">
+                            ${hadits.source ? `
+                              <div class="hadits-source" style="font-size: 12px; color: #666; margin-bottom: 4px;">
+                                📚 <strong>Sumber:</strong> ${hadits.source}
+                              </div>
+                            ` : ''}
+                            ${hadits.narrator ? `
+                              <div class="hadits-narrator" style="font-size: 12px; color: #666;">
+                                👤 <strong>Perawi:</strong> ${hadits.narrator}
+                              </div>
+                            ` : ''}
+                          </div>
                         </div>
                       </div>
-                    `;
-                  }).join('')}
-                </div>
+                    </div>
+                  `;
+                }).join('')}
               </div>
             ` : ''}
             
-            ${response.references && response.references.length > 0 ? `
-              <div class="message-source">
-                <div class="source-title">Referensi:</div>
-                ${response.references.map(ref => `<div class="source-text">• ${ref}</div>`).join('')}
-              </div>
-            ` : ''}
+
             
             <div class="ai-status" style="margin-top: 12px; padding: 6px 8px; background: ${isGemini ? '#e8f5e8' : '#fff3cd'}; border-radius: 4px; font-size: 11px; color: ${isGemini ? '#2d5a2d' : '#856404'};">
               ${isGemini ? '🤖 Dijawab oleh Gemini AI dengan dataset hadits' : '⚠️ Menggunakan respons fallback'}
@@ -740,7 +1014,27 @@ class AskAiView {
   }
 
   getClearButton() {
-    return document.getElementById('clear-button');
+    // Return null since we don't have clear button in new layout
+    // or create a virtual clear function
+    return {
+      addEventListener: () => {},
+      click: () => this.clearMessages()
+    };
+  }
+
+  toggleMobileSidebar() {
+    const sidebar = document.getElementById('chat-sidebar');
+    const overlay = document.getElementById('mobile-overlay');
+    
+    if (sidebar && overlay) {
+      const isOpen = sidebar.classList.contains('mobile-open');
+      
+      if (isOpen) {
+        sidebar.classList.remove('mobile-open');
+      } else {
+        sidebar.classList.add('mobile-open');
+      }
+    }
   }
 
   clearInput() {

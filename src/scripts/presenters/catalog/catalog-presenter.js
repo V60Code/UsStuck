@@ -18,7 +18,7 @@ class CatalogPresenter {
     const categoriesGrid = document.getElementById('categories-grid');
     
     if (categoriesGrid) {
-      categoriesGrid.className = 'grid-cols-3';
+      categoriesGrid.className = 'grid grid-cols-3';
       categoriesGrid.style.gap = '24px';
       categoriesGrid.innerHTML = this.view.renderCategories(categories);
     }

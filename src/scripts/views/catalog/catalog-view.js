@@ -5,45 +5,88 @@ class CatalogView {
 
   render() {
     return `
+      <!-- Hero Section -->
+      <section style="
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+      ">
+        <div class="container">
+          <div style="font-size: 4rem; margin-bottom: 24px;">📚</div>
+          <h1 style="
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+          ">Pustaka <span style="color: #D2B48C;">Perawi Hadis</span></h1>
+          <p style="
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+          ">Telusuri koleksi hadits shahih dari para perawi terkemuka dalam sejarah Islam.</p>
+        </div>
+      </section>
+
       <div class="container">
         <div class="section">
-          <div class="catalog-header" style="text-align: center; margin-bottom: 48px;">
-            <div style="font-size: 4rem; margin-bottom: 24px;">📚</div>
-            <h1 class="section-title">Catalog Pembelajaran Islam</h1>
-            <p class="section-subtitle">
-              Koleksi lengkap materi pembelajaran Islam dari Al-Quran, Hadits, hingga buku-buku klasik
-            </p>
-          </div>
-
           <!-- Search and Filter Section -->
-          <div class="catalog-controls" style="margin-bottom: 48px;">
-            <div style="max-width: 600px; margin: 0 auto;">
+          <div style="
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            margin: -40px auto 60px;
+            max-width: 800px;
+            position: relative;
+            z-index: 10;
+          ">
+            <div style="text-align: center; margin-bottom: 32px;">
+              <h2 style="
+                color: #2c3e50;
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+                font-weight: 600;
+              ">Cari Koleksi Hadits</h2>
+              <p style="color: #6c757d; font-size: 1rem;">Temukan hadits berdasarkan perawi, kitab, atau kata kunci</p>
+            </div>
+            
+            <div style="margin-bottom: 24px;">
               <div style="display: flex; gap: 12px; margin-bottom: 24px;">
                 <input 
                   type="text" 
                   id="search-input" 
-                  placeholder="Cari buku, hadits, atau materi..."
+                  placeholder="Cari berdasarkan perawi, kitab, atau kata kunci..."
                   style="
                     flex: 1;
-                    padding: 16px;
-                    border: 2px solid #e0e0e0;
-                    border-radius: 12px;
+                    padding: 16px 20px;
+                    border: 2px solid #e9ecef;
+                    border-radius: 25px;
                     font-size: 16px;
-                    transition: border-color 0.2s;
+                    outline: none;
+                    transition: all 0.3s ease;
                   "
+                  onfocus="this.style.borderColor='#D2B48C'; this.style.boxShadow='0 0 0 3px rgba(210, 180, 140, 0.1)'"
+                  onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'"
                 />
                 <button 
                   id="search-button"
                   style="
-                    background-color: #556B2F;
+                    background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
                     color: white;
                     border: none;
-                    padding: 16px 24px;
-                    border-radius: 12px;
+                    padding: 16px 32px;
+                    border-radius: 25px;
                     font-size: 16px;
+                    font-weight: 600;
                     cursor: pointer;
-                    transition: background-color 0.2s;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(210, 180, 140, 0.3);
                   "
+                  onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(210, 180, 140, 0.4)'"
+                  onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(210, 180, 140, 0.3)'"
                 >
                   Cari
                 </button>
@@ -57,7 +100,23 @@ class CatalogView {
           </div>
 
           <!-- Categories Grid -->
-          <div id="categories-grid" class="categories-grid" style="margin-bottom: 48px;">
+          <div style="text-align: center; margin-bottom: 48px;">
+            <h2 style="
+              color: #2c3e50;
+              font-size: 2.5rem;
+              margin-bottom: 16px;
+              font-weight: 700;
+            ">Koleksi <span style="color: #D2B48C;">Perawi Hadits</span></h2>
+            <p style="
+              color: #6c757d;
+              font-size: 1.1rem;
+              line-height: 1.6;
+              max-width: 600px;
+              margin: 0 auto 48px;
+            ">Jelajahi hadits dari para perawi terpercaya yang telah dikumpulkan dan diverifikasi oleh para ulama</p>
+          </div>
+          
+          <div id="categories-grid" class="grid grid-cols-3" style="gap: 32px; margin-bottom: 48px;">
             <!-- Categories will be rendered here -->
           </div>
 
@@ -79,7 +138,7 @@ class CatalogView {
                 ← Kembali ke Kategori
               </button>
             </div>
-            <div id="items-grid" class="grid-cols-3" style="gap: 24px;">
+            <div id="items-grid" class="grid grid-cols-3" style="gap: 24px;">
               <!-- Items will be rendered here -->
             </div>
           </div>
@@ -87,7 +146,7 @@ class CatalogView {
           <!-- Search Results -->
           <div id="search-results" style="display: none;">
             <h3 id="search-results-title" style="margin-bottom: 24px; text-align: center;"></h3>
-            <div id="search-results-grid" class="grid-cols-3" style="gap: 24px;">
+            <div id="search-results-grid" class="grid grid-cols-3" style="gap: 24px;">
               <!-- Search results will be rendered here -->
             </div>
           </div>
@@ -101,22 +160,57 @@ class CatalogView {
       <div class="card category-card" data-category="${category.id}" style="
         cursor: pointer;
         text-align: center;
-        padding: 32px 24px;
-        transition: transform 0.2s, box-shadow 0.2s;
+        padding: 40px 32px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+        position: relative;
+        overflow: hidden;
+      "
+      onmouseover="
+        this.style.transform='translateY(-8px)';
+        this.style.boxShadow='0 20px 40px rgba(0,0,0,0.15)';
+        this.style.borderColor='#D2B48C';
+      "
+      onmouseout="
+        this.style.transform='translateY(0)';
+        this.style.boxShadow='0 10px 30px rgba(0,0,0,0.1)';
+        this.style.borderColor='#f0f0f0';
       ">
-        <div style="font-size: 3rem; margin-bottom: 16px;">${category.icon}</div>
-        <h3 style="color: #333; margin-bottom: 8px;">${category.name}</h3>
-        <p style="color: #666; font-size: 14px; margin-bottom: 16px;">${category.description}</p>
         <div style="
-          background-color: #556B2F;
+          font-size: 4rem;
+          margin-bottom: 24px;
+          background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        ">${category.icon}</div>
+        <h3 style="
+          color: #2c3e50;
+          margin-bottom: 12px;
+          font-size: 1.5rem;
+          font-weight: 600;
+        ">${category.name}</h3>
+        <p style="
+          color: #6c757d;
+          font-size: 1rem;
+          margin-bottom: 24px;
+          line-height: 1.5;
+        ">${category.description}</p>
+        <div style="
+          background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
           color: white;
-          padding: 8px 16px;
-          border-radius: 6px;
+          padding: 12px 24px;
+          border-radius: 25px;
           font-size: 14px;
-          font-weight: 500;
+          font-weight: 600;
           display: inline-block;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(210, 180, 140, 0.3);
         ">
-          Lihat Koleksi
+          Lihat Koleksi Hadits
         </div>
       </div>
     `).join('');
@@ -125,30 +219,37 @@ class CatalogView {
   renderCategoryFilter(categories) {
     const allButton = `
       <button class="category-filter-btn active" data-category="all" style="
-        background-color: #556B2F;
+        background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
         color: white;
         border: none;
-        padding: 8px 16px;
-        border-radius: 20px;
+        padding: 10px 20px;
+        border-radius: 25px;
         font-size: 14px;
+        font-weight: 600;
         cursor: pointer;
-        transition: all 0.2s;
-      ">
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(210, 180, 140, 0.3);
+      "
+      onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(210, 180, 140, 0.4)'"
+      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(210, 180, 140, 0.3)'">
         Semua
       </button>
     `;
 
     const categoryButtons = categories.map(category => `
       <button class="category-filter-btn" data-category="${category.id}" style="
-        background-color: #f5f5f5;
-        color: #666;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 20px;
+        background: white;
+        color: #6c757d;
+        border: 2px solid #e9ecef;
+        padding: 10px 20px;
+        border-radius: 25px;
         font-size: 14px;
+        font-weight: 500;
         cursor: pointer;
-        transition: all 0.2s;
-      ">
+        transition: all 0.3s ease;
+      "
+      onmouseover="this.style.borderColor='#D2B48C'; this.style.color='#D2B48C'; this.style.transform='translateY(-2px)'"
+      onmouseout="this.style.borderColor='#e9ecef'; this.style.color='#6c757d'; this.style.transform='translateY(0)'">
         ${category.name}
       </button>
     `).join('');
@@ -159,63 +260,141 @@ class CatalogView {
   renderItems(items) {
     if (items.length === 0) {
       return `
-        <div style="text-align: center; padding: 48px; color: #666;">
-          <div style="font-size: 3rem; margin-bottom: 16px;">📭</div>
-          <h3>Tidak ada item ditemukan</h3>
-          <p>Coba ubah kata kunci pencarian atau pilih kategori lain</p>
+        <div style="
+          text-align: center;
+          padding: 80px 40px;
+          background: white;
+          border-radius: 20px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          margin: 40px 0;
+        ">
+          <div style="
+            font-size: 4rem;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          ">📭</div>
+          <h3 style="
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+          ">Tidak ada hadits ditemukan</h3>
+          <p style="
+            color: #6c757d;
+            font-size: 1rem;
+            line-height: 1.5;
+          ">Coba ubah kata kunci pencarian atau pilih perawi lain</p>
         </div>
       `;
     }
 
     return items.map(item => `
-      <div class="card item-card" style="padding: 24px; text-align: left;">
-        <div style="display: flex; align-items: center; margin-bottom: 12px;">
+      <div class="card item-card" style="
+        padding: 32px;
+        text-align: left;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+        position: relative;
+        overflow: hidden;
+      "
+      onmouseover="
+        this.style.transform='translateY(-5px)';
+        this.style.boxShadow='0 15px 40px rgba(0,0,0,0.15)';
+        this.style.borderColor='#D2B48C';
+      "
+      onmouseout="
+        this.style.transform='translateY(0)';
+        this.style.boxShadow='0 10px 30px rgba(0,0,0,0.1)';
+        this.style.borderColor='#f0f0f0';
+      ">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
           <div style="
-            background-color: #f8f7f4;
-            padding: 8px;
-            border-radius: 8px;
-            margin-right: 12px;
-            font-size: 20px;
+            background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
+            padding: 12px;
+            border-radius: 12px;
+            margin-right: 16px;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(210, 180, 140, 0.3);
           ">
             ${this.getItemIcon(item.type)}
           </div>
           <div>
-            <div style="font-size: 12px; color: #556B2F; font-weight: 500; text-transform: uppercase;">
+            <div style="
+              font-size: 12px;
+              color: #D2B48C;
+              font-weight: 600;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+            ">
               ${item.category || 'Umum'}
             </div>
-            <div style="font-size: 10px; color: #999; text-transform: uppercase;">
+            <div style="
+              font-size: 10px;
+              color: #6c757d;
+              text-transform: uppercase;
+              margin-top: 2px;
+            ">
               ${item.type}
             </div>
           </div>
         </div>
         
-        <h4 style="color: #333; margin-bottom: 8px; line-height: 1.4;">${item.title}</h4>
-        <p style="color: #666; font-size: 14px; margin-bottom: 16px;">Oleh: ${item.author}</p>
+        <h4 style="
+          color: #2c3e50;
+          margin-bottom: 12px;
+          line-height: 1.4;
+          font-size: 1.2rem;
+          font-weight: 600;
+        ">${item.title}</h4>
+        <p style="
+          color: #6c757d;
+          font-size: 1rem;
+          margin-bottom: 24px;
+          line-height: 1.5;
+        ">Oleh: <span style="color: #D2B48C; font-weight: 500;">${item.author}</span></p>
         
-        <div style="display: flex; gap: 8px;">
+        <div style="display: flex; gap: 12px;">
           <button class="btn-view" data-item-id="${item.id}" style="
             flex: 1;
-            background-color: #556B2F;
+            background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 12px 20px;
+            border-radius: 25px;
             font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
-          ">
-            Lihat Detail
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(210, 180, 140, 0.3);
+          "
+          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(210, 180, 140, 0.4)'"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(210, 180, 140, 0.3)'">
+            Lihat Koleksi Hadits
           </button>
           <button class="btn-download" data-item-id="${item.id}" style="
-            background: none;
-            border: 1px solid #556B2F;
-            color: #556B2F;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 14px;
+            background: white;
+            border: 2px solid #D2B48C;
+            color: #D2B48C;
+            padding: 12px 16px;
+            border-radius: 25px;
+            font-size: 16px;
             cursor: pointer;
-            transition: all 0.2s;
-          ">
+            transition: all 0.3s ease;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+          onmouseover="this.style.background='#D2B48C'; this.style.color='white'; this.style.transform='translateY(-2px)'"
+          onmouseout="this.style.background='white'; this.style.color='#D2B48C'; this.style.transform='translateY(0)'">
             📥
           </button>
         </div>

@@ -2,58 +2,69 @@ class CatalogModel {
   constructor() {
     this.categories = [
       {
-        id: 'quran',
-        name: 'Al-Quran',
-        description: 'Mushaf Al-Quran dengan terjemahan dan tafsir',
+        id: 'bukhari',
+        name: 'Imam Bukhari',
+        description: 'Penyusun kitab hadits paling otentik, Shahih al-Bukhari, yang menjadi rujukan utama umat Islam setelah Al-Quran',
         icon: '📖',
         items: [
-          { id: 1, title: 'Al-Quran Terjemahan Indonesia', type: 'book', author: 'Kementerian Agama RI' },
-          { id: 2, title: 'Tafsir Ibnu Katsir', type: 'book', author: 'Ibnu Katsir' },
-          { id: 3, title: 'Tafsir Al-Misbah', type: 'book', author: 'M. Quraish Shihab' }
+          { id: 1, title: 'Shahih Bukhari - Kitab Iman', type: 'book', author: 'Imam Bukhari' },
+          { id: 2, title: 'Shahih Bukhari - Kitab Ilmu', type: 'book', author: 'Imam Bukhari' },
+          { id: 3, title: 'Shahih Bukhari - Kitab Wudhu', type: 'book', author: 'Imam Bukhari' }
         ]
       },
       {
-        id: 'hadits',
-        name: 'Hadits',
-        description: 'Koleksi hadits shahih dari berbagai kitab',
+        id: 'muslim',
+        name: 'Imam Muslim',
+        description: 'Kitabnya, Shahih Muslim, dikenal dengan sebagai koleksi hadits paling kedua setelah Shahih al-Bukhari',
         icon: '📚',
         items: [
-          { id: 4, title: 'Shahih Bukhari', type: 'book', author: 'Imam Bukhari' },
-          { id: 5, title: 'Shahih Muslim', type: 'book', author: 'Imam Muslim' },
-          { id: 6, title: 'Sunan Abu Dawud', type: 'book', author: 'Abu Dawud' }
+          { id: 4, title: 'Shahih Muslim - Kitab Iman', type: 'book', author: 'Imam Muslim' },
+          { id: 5, title: 'Shahih Muslim - Kitab Thaharah', type: 'book', author: 'Imam Muslim' },
+          { id: 6, title: 'Shahih Muslim - Kitab Shalat', type: 'book', author: 'Imam Muslim' }
         ]
       },
       {
-        id: 'fiqh',
-        name: 'Fiqh',
-        description: 'Buku-buku fiqh dan hukum Islam',
+        id: 'tirmidzi',
+        name: 'Imam Tirmidzi',
+        description: 'Dikenal dengan karyanya Jami at-Tirmidzi (Sunan at-Tirmidzi), yang juga memuat penilaian derajat hadits',
+        icon: '📜',
+        items: [
+          { id: 7, title: 'Sunan Tirmidzi - Kitab Thaharah', type: 'book', author: 'Imam Tirmidzi' },
+          { id: 8, title: 'Sunan Tirmidzi - Kitab Shalat', type: 'book', author: 'Imam Tirmidzi' },
+          { id: 9, title: 'Sunan Tirmidzi - Kitab Zakat', type: 'book', author: 'Imam Tirmidzi' }
+        ]
+      },
+      {
+        id: 'abu-daud',
+        name: 'Imam Abu Daud',
+        description: 'Karyanya, Sunan Abi Daud, berfokus pada pengumpulan hadits-hadits yang berkaitan dengan hukum fiqh',
         icon: '⚖️',
         items: [
-          { id: 7, title: 'Fiqh Sunnah', type: 'book', author: 'Sayyid Sabiq' },
-          { id: 8, title: 'Bidayatul Mujtahid', type: 'book', author: 'Ibnu Rusyd' },
-          { id: 9, title: 'Fiqh Islam Wa Adillatuhu', type: 'book', author: 'Wahbah Zuhaili' }
+          { id: 10, title: 'Sunan Abu Daud - Kitab Thaharah', type: 'book', author: 'Abu Daud Sulaiman bin al-Asy\'ats as-Sijistani' },
+          { id: 11, title: 'Sunan Abu Daud - Kitab Shalat', type: 'book', author: 'Abu Daud Sulaiman bin al-Asy\'ats as-Sijistani' },
+          { id: 12, title: 'Sunan Abu Daud - Kitab Zakat', type: 'book', author: 'Abu Daud Sulaiman bin al-Asy\'ats as-Sijistani' }
         ]
       },
       {
-        id: 'akhlaq',
-        name: 'Akhlaq',
-        description: 'Buku-buku tentang akhlaq dan tasawuf',
-        icon: '🤲',
+        id: 'nasai',
+        name: 'Imam An-Nasa\'i',
+        description: 'Menyusun kitab sunan an-Nasa\'i (al-Mujtaba), yang dikenal memiliki syarat penyaringan hadits yang sangat ketat',
+        icon: '🔍',
         items: [
-          { id: 10, title: 'Ihya Ulumuddin', type: 'book', author: 'Imam Al-Ghazali' },
-          { id: 11, title: 'Riyadhus Shalihin', type: 'book', author: 'Imam An-Nawawi' },
-          { id: 12, title: 'Akhlaq Lil Banin', type: 'book', author: 'Umar bin Ahmad Baraja' }
+          { id: 13, title: 'Sunan an-Nasa\'i - Kitab Thaharah', type: 'book', author: 'Ahmad bin Syu\'aib an-Nasa\'i' },
+          { id: 14, title: 'Sunan an-Nasa\'i - Kitab Shalat', type: 'book', author: 'Ahmad bin Syu\'aib an-Nasa\'i' },
+          { id: 15, title: 'Sunan an-Nasa\'i - Kitab Zakat', type: 'book', author: 'Ahmad bin Syu\'aib an-Nasa\'i' }
         ]
       },
       {
-        id: 'audio',
-        name: 'Audio & Video',
-        description: 'Ceramah dan kajian dalam format audio/video',
-        icon: '🎧',
+        id: 'ibn-majah',
+        name: 'Imam Ibn Majah',
+        description: 'Karyanya, Sunan Ibn Majah, melengkapi enam kitab hadits utama (Kutubussittah), meskipun beberapa hadits di dalamnya diperdebatkan',
+        icon: '📋',
         items: [
-          { id: 13, title: 'Kajian Tafsir Al-Quran', type: 'video', author: 'Ustadz Abdul Somad' },
-          { id: 14, title: 'Ceramah Akhlaq Mulia', type: 'audio', author: 'Ustadz Yusuf Mansur' },
-          { id: 15, title: 'Fiqh Sehari-hari', type: 'video', author: 'Ustadz Khalid Basalamah' }
+          { id: 16, title: 'Sunan Ibn Majah - Kitab Thaharah', type: 'book', author: 'Abu Abdullah Muhammad bin Yazid al-Majah' },
+          { id: 17, title: 'Sunan Ibn Majah - Kitab Shalat', type: 'book', author: 'Abu Abdullah Muhammad bin Yazid al-Majah' },
+          { id: 18, title: 'Sunan Ibn Majah - Kitab Nikah', type: 'book', author: 'Abu Abdullah Muhammad bin Yazid al-Majah' }
         ]
       }
     ];

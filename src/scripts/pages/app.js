@@ -1,5 +1,5 @@
 import routes from '../routes/routes';
-import { getActiveRoute } from '../routes/url-parser';
+import { getActiveRoute, parseActivePathname } from '../routes/url-parser';
 
 class App {
   #content = null;
@@ -38,12 +38,23 @@ class App {
 
   async renderPage() {
     const url = getActiveRoute();
+    const pathSegments = parseActivePathname();
     const PageClass = routes[url];
 
     if (PageClass) {
       const page = new PageClass();
-      this.#content.innerHTML = await page.render();
-      await page.afterRender();
+      
+      // Check if page needs parameters (like catalog detail)
+      if (pathSegments.id && url === '/catalog/:id') {
+        this.#content.innerHTML = await page.render(pathSegments.id);
+      } else {
+        this.#content.innerHTML = await page.render();
+      }
+      
+      // Call afterRender if it exists
+      if (typeof page.afterRender === 'function') {
+        await page.afterRender();
+      }
       
       // Update active navigation state
       this.#updateActiveNavigation();

@@ -181,9 +181,26 @@ class CatalogPresenter {
   }
 
   handleCategorySelect(categoryId) {
-    const items = this.model.getItemsByCategory(categoryId);
-    this.renderCategoryItems(items);
-    this.view.showItems();
+    // Map category ID to narrator name for hadits data
+    const narratorMap = {
+      'bukhari': 'bukhari',
+      'muslim': 'muslim',
+      'tirmidzi': 'tirmidzi',
+      'abu-daud': 'abu daud',
+      'an-nasai': 'an-nasa\'i',
+      'ibn-majah': 'ibn majah'
+    };
+    
+    const narrator = narratorMap[categoryId];
+    if (narrator) {
+      // Navigate to detail catalog page
+      window.location.hash = `#/catalog/detail/${narrator}`;
+    } else {
+      // Fallback to original behavior for unknown categories
+      const items = this.model.getItemsByCategory(categoryId);
+      this.renderCategoryItems(items);
+      this.view.showItems();
+    }
   }
 
   handleCategoryFilter(categoryId) {

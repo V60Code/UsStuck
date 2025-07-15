@@ -16,7 +16,7 @@ class ForumPresenter {
 
   renderForumStats() {
     const stats = this.model.getForumStats();
-    const statsContainer = document.getElementById('forum-stats');
+    const statsContainer = document.getElementById('forum-stats-inline');
     
     if (statsContainer) {
       statsContainer.innerHTML = this.view.renderForumStats(stats);

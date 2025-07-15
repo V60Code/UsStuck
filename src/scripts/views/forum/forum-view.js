@@ -7,22 +7,104 @@ class ForumView {
     return `
       <div class="container">
         <div class="section">
-          <div class="forum-header" style="text-align: center; margin-bottom: 48px;">
-            <div style="font-size: 4rem; margin-bottom: 24px;">💬</div>
-            <h1 class="section-title">Forum Diskusi Islam</h1>
-            <p class="section-subtitle">
-              Tempat berbagi pengetahuan, diskusi, dan tanya jawab seputar Islam
-            </p>
+          <div class="forum-header" style="
+            display: flex; 
+            align-items: center; 
+            gap: 40px; 
+            margin-bottom: 48px; 
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
+            padding: 40px; 
+            border-radius: 20px;
+            flex-direction: row;
+          ">
+            <div style="
+              flex: 1; 
+              max-width: 400px;
+              min-width: 250px;
+            ">
+              <img src="/forum.png" alt="Forum Discussion" style="
+                width: 100%; 
+                height: auto; 
+                border-radius: 15px;
+                max-height: 300px;
+                object-fit: cover;
+              " />
+            </div>
+            <div style="
+              flex: 1; 
+              text-align: left;
+              min-width: 300px;
+            ">
+              <h1 style="
+                font-size: clamp(1.8rem, 4vw, 2.5rem); 
+                color: #2c3e50; 
+                margin-bottom: 16px; 
+                font-weight: 700;
+                line-height: 1.2;
+              ">Gabung Forum <span style="color: #D2B48C;">Diskusi</span></h1>
+              <p style="
+                color: #6c757d; 
+                font-size: clamp(1rem, 2.5vw, 1.1rem); 
+                line-height: 1.6; 
+                margin-bottom: 24px;
+              ">
+                Tempat berbagi pengetahuan diskusi dan tanya jawab<br>
+                seputar Islam
+              </p>
+              <div style="
+                display: grid; 
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+                gap: 16px; 
+                margin-top: 24px;
+              ">
+                <div id="forum-stats-inline" class="forum-stats-inline">
+                  <!-- Inline stats will be rendered here -->
+                </div>
+              </div>
+            </div>
           </div>
-
-          <!-- Forum Stats -->
-          <div id="forum-stats" class="forum-stats" style="margin-bottom: 32px;">
-            <!-- Stats will be rendered here -->
-          </div>
+          
+          <style>
+            @media (max-width: 768px) {
+              .forum-header {
+                flex-direction: column !important;
+                text-align: center !important;
+                padding: 24px !important;
+                gap: 24px !important;
+              }
+              .forum-header > div:first-child {
+                max-width: 100% !important;
+                min-width: auto !important;
+              }
+              .forum-header > div:last-child {
+                text-align: center !important;
+                min-width: auto !important;
+              }
+              .forum-header h1 {
+                font-size: 2rem !important;
+              }
+              .forum-header p {
+                font-size: 1rem !important;
+              }
+            }
+            
+            @media (max-width: 480px) {
+              .forum-header {
+                padding: 20px !important;
+                margin-bottom: 32px !important;
+              }
+              .forum-header h1 {
+                font-size: 1.75rem !important;
+              }
+              .forum-header img {
+                max-height: 200px !important;
+              }
+            }
+          </style>
 
           <!-- Forum Controls -->
-          <div class="forum-controls" style="margin-bottom: 32px;">
-            <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; justify-content: space-between;">
+          <div class="forum-controls" style="margin-bottom: 32px; background: white; padding: 24px; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+            <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; justify-content: space-between; margin-bottom: 20px;">
               <div style="display: flex; gap: 12px; flex: 1; min-width: 300px;">
                 <input 
                   type="text" 
@@ -30,11 +112,12 @@ class ForumView {
                   placeholder="Cari topik diskusi..."
                   style="
                     flex: 1;
-                    padding: 12px 16px;
-                    border: 2px solid #e0e0e0;
-                    border-radius: 8px;
-                    font-size: 14px;
-                    transition: border-color 0.2s;
+                    padding: 14px 18px;
+                    border: 2px solid #e9ecef;
+                    border-radius: 12px;
+                    font-size: 15px;
+                    transition: all 0.2s;
+                    background: #f8f9fa;
                   "
                 />
                 <button 
@@ -43,11 +126,13 @@ class ForumView {
                     background-color: #556B2F;
                     color: white;
                     border: none;
-                    padding: 12px 20px;
-                    border-radius: 8px;
-                    font-size: 14px;
+                    padding: 14px 24px;
+                    border-radius: 12px;
+                    font-size: 15px;
+                    font-weight: 600;
                     cursor: pointer;
-                    transition: background-color 0.2s;
+                    transition: all 0.2s;
+                    box-shadow: 0 2px 8px rgba(85, 107, 47, 0.3);
                   "
                 >
                   Cari
@@ -60,22 +145,23 @@ class ForumView {
                   background-color: #D2B48C;
                   color: white;
                   border: none;
-                  padding: 12px 24px;
-                  border-radius: 8px;
-                  font-size: 14px;
+                  padding: 14px 28px;
+                  border-radius: 12px;
+                  font-size: 15px;
                   font-weight: 600;
                   cursor: pointer;
-                  transition: background-color 0.2s;
+                  transition: all 0.2s;
+                  box-shadow: 0 2px 8px rgba(210, 180, 140, 0.3);
                 "
               >
-                + Topik Baru
+                + Topik
               </button>
             </div>
-          </div>
-
-          <!-- Category Filter -->
-          <div id="category-filter" class="category-filter" style="margin-bottom: 32px;">
-            <!-- Categories will be rendered here -->
+            
+            <!-- Category Filter -->
+            <div id="category-filter" class="category-filter">
+              <!-- Categories will be rendered here -->
+            </div>
           </div>
 
           <!-- Topics List -->
@@ -96,22 +182,22 @@ class ForumView {
 
   renderForumStats(stats) {
     return `
-      <div class="grid-cols-4" style="gap: 16px; text-align: center;">
-        <div class="card" style="padding: 20px;">
-          <div style="font-size: 2rem; color: #556B2F; font-weight: bold;">${stats.totalTopics}</div>
-          <div style="color: #666; font-size: 14px;">Total Topik</div>
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+        <div style="text-align: center; padding: 16px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <div style="font-size: 2rem; color: #556B2F; font-weight: bold; margin-bottom: 4px;">${stats.totalTopics}</div>
+          <div style="color: #6c757d; font-size: 13px; font-weight: 500;">Total Topik</div>
         </div>
-        <div class="card" style="padding: 20px;">
-          <div style="font-size: 2rem; color: #556B2F; font-weight: bold;">${stats.totalReplies}</div>
-          <div style="color: #666; font-size: 14px;">Total Balasan</div>
+        <div style="text-align: center; padding: 16px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <div style="font-size: 2rem; color: #556B2F; font-weight: bold; margin-bottom: 4px;">${stats.totalReplies}</div>
+          <div style="color: #6c757d; font-size: 13px; font-weight: 500;">Total Balasan</div>
         </div>
-        <div class="card" style="padding: 20px;">
-          <div style="font-size: 2rem; color: #556B2F; font-weight: bold;">${stats.totalViews}</div>
-          <div style="color: #666; font-size: 14px;">Total Views</div>
+        <div style="text-align: center; padding: 16px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <div style="font-size: 2rem; color: #556B2F; font-weight: bold; margin-bottom: 4px;">${stats.totalViews}</div>
+          <div style="color: #6c757d; font-size: 13px; font-weight: 500;">Total Views</div>
         </div>
-        <div class="card" style="padding: 20px;">
-          <div style="font-size: 2rem; color: #556B2F; font-weight: bold;">${stats.activeUsers}</div>
-          <div style="color: #666; font-size: 14px;">Pengguna Aktif</div>
+        <div style="text-align: center; padding: 16px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <div style="font-size: 2rem; color: #556B2F; font-weight: bold; margin-bottom: 4px;">${stats.activeUsers}</div>
+          <div style="color: #6c757d; font-size: 13px; font-weight: 500;">Pengguna Aktif</div>
         </div>
       </div>
     `;
@@ -119,20 +205,22 @@ class ForumView {
 
   renderCategoryFilter(categories) {
     return `
-      <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-start;">
         ${categories.map(category => `
           <button 
             class="category-btn ${category.id === 'all' ? 'active' : ''}" 
             data-category="${category.id}"
             style="
-              background-color: ${category.id === 'all' ? category.color : '#f5f5f5'};
-              color: ${category.id === 'all' ? 'white' : '#666'};
-              border: none;
-              padding: 8px 16px;
-              border-radius: 20px;
+              background-color: ${category.id === 'all' ? category.color : '#f8f9fa'};
+              color: ${category.id === 'all' ? 'white' : '#6c757d'};
+              border: 2px solid ${category.id === 'all' ? category.color : '#e9ecef'};
+              padding: 10px 20px;
+              border-radius: 25px;
               font-size: 14px;
+              font-weight: 500;
               cursor: pointer;
-              transition: all 0.2s;
+              transition: all 0.3s ease;
+              box-shadow: ${category.id === 'all' ? '0 2px 8px rgba(85, 107, 47, 0.2)' : 'none'};
             "
           >
             ${category.name}
@@ -156,57 +244,73 @@ class ForumView {
     return topics.map(topic => `
       <div class="card forum-card" style="
         padding: 24px;
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
-        gap: 16px;
+        margin-bottom: 20px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        border: 1px solid #f1f3f4;
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
       " data-topic-id="${topic.id}">
         
         ${topic.isPinned ? `
           <div style="
-            background-color: #FFD700;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
             color: #333;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 16px;
+            right: 16px;
+            box-shadow: 0 2px 6px rgba(255, 215, 0, 0.3);
           ">
             📌 PINNED
           </div>
         ` : ''}
 
         <div style="flex: 1;">
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
             <span style="
-              background-color: ${this.getCategoryColor(topic.category)};
+              background: linear-gradient(135deg, ${this.getCategoryColor(topic.category)}, ${this.getCategoryColor(topic.category)}dd);
               color: white;
-              padding: 4px 8px;
-              border-radius: 12px;
+              padding: 6px 14px;
+              border-radius: 20px;
               font-size: 12px;
-              font-weight: 500;
+              font-weight: 600;
+              box-shadow: 0 2px 6px ${this.getCategoryColor(topic.category)}40;
             ">
               ${topic.category}
             </span>
-            <span style="color: #999; font-size: 12px;">${topic.lastActivity}</span>
+            <span style="color: #8e9aaf; font-size: 13px; font-weight: 500;">${topic.lastActivity}</span>
           </div>
           
-          <h3 style="color: #333; margin-bottom: 8px; font-size: 18px; line-height: 1.4;">
+          <h3 style="color: #2c3e50; margin-bottom: 12px; font-size: 19px; line-height: 1.4; font-weight: 600;">
             ${topic.title}
           </h3>
           
-          <p style="color: #666; font-size: 14px; margin-bottom: 12px; line-height: 1.5;">
+          <p style="color: #6c757d; font-size: 15px; margin-bottom: 16px; line-height: 1.6;">
             ${topic.content.substring(0, 120)}${topic.content.length > 120 ? '...' : ''}
           </p>
           
-          <div style="display: flex; align-items: center; gap: 16px; color: #999; font-size: 12px;">
-            <span>👤 ${topic.author}</span>
-            <span>💬 ${topic.replies} balasan</span>
-            <span>👁️ ${topic.views} views</span>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid #f1f3f4;">
+            <div style="display: flex; align-items: center; gap: 4px; color: #6c757d; font-size: 13px; font-weight: 500;">
+              <span style="color: #8e9aaf;">👤</span>
+              <span>${topic.author}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 16px; color: #8e9aaf; font-size: 13px; font-weight: 500;">
+              <span style="display: flex; align-items: center; gap: 4px;">
+                <span>💬</span>
+                <span>${topic.replies}</span>
+              </span>
+              <span style="display: flex; align-items: center; gap: 4px;">
+                <span>👁️</span>
+                <span>${topic.views}</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>

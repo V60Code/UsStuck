@@ -219,15 +219,15 @@ class DetailCatalogPresenter {
   }
 
   formatHaditsForCopy(hadits) {
-    let text = `📚 ${hadits.Kitab || 'Kitab Hadits'}\n`;
-    text += `📖 Hadits No. ${hadits.Nomor || '-'} • ${hadits.Nama || 'Perawi'}\n\n`;
+    let text = `📚 ${hadits.Perawi || 'Hadits'}\n`;
+    text += `📖 ID: ${hadits.id || '-'} • ${hadits.Nama || 'Perawi'}\n\n`;
     
     if (hadits.Arab) {
       text += `📜 Teks Arab:\n${hadits.Arab}\n\n`;
     }
     
-    if (hadits.Indonesia) {
-      text += `🇮🇩 Terjemahan Indonesia:\n${hadits.Indonesia}\n\n`;
+    if (hadits.Terjemahan) {
+      text += `🇮🇩 Terjemahan Indonesia:\n${hadits.Terjemahan}\n\n`;
     }
     
     text += `Sumber: Aplikasi Pustaka Perawi Hadits`;
@@ -267,7 +267,7 @@ class DetailCatalogPresenter {
       
       if (navigator.share) {
         navigator.share({
-          title: `Hadits ${hadits.Kitab || 'Hadits'} No. ${hadits.Nomor || '-'}`,
+          title: `${hadits.Perawi || 'Hadits'} - ID: ${hadits.id || '-'}`,
           text: shareText,
           url: window.location.href
         }).then(() => {
@@ -282,10 +282,10 @@ class DetailCatalogPresenter {
   }
 
   formatHaditsForShare(hadits) {
-    let text = `📚 ${hadits.Kitab || 'Kitab Hadits'} - Hadits No. ${hadits.Nomor || '-'}\n\n`;
+    let text = `📚 ${hadits.Perawi || 'Hadits'} - ID: ${hadits.id || '-'}\n\n`;
     
-    if (hadits.Indonesia) {
-      text += `${hadits.Indonesia}\n\n`;
+    if (hadits.Terjemahan) {
+      text += `${hadits.Terjemahan}\n\n`;
     }
     
     text += `Diriwayatkan oleh ${hadits.Nama || 'Perawi'}\n`;

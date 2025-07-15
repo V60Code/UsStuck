@@ -61,53 +61,59 @@ class CatalogPresenter {
 
     // Category cards click
     document.addEventListener('click', (event) => {
-      const categoryCard = event.target.closest('.category-card');
-      if (categoryCard) {
-        const categoryId = categoryCard.getAttribute('data-category');
-        this.handleCategorySelect(categoryId);
-      }
+      if (event.target && typeof event.target.closest === 'function') {
+        const categoryCard = event.target.closest('.category-card');
+        if (categoryCard) {
+          const categoryId = categoryCard.getAttribute('data-category');
+          this.handleCategorySelect(categoryId);
+        }
 
-      // Category filter buttons
-      const filterBtn = event.target.closest('.category-filter-btn');
-      if (filterBtn) {
-        const categoryId = filterBtn.getAttribute('data-category');
-        this.handleCategoryFilter(categoryId);
-      }
+        // Category filter buttons
+        const filterBtn = event.target.closest('.category-filter-btn');
+        if (filterBtn) {
+          const categoryId = filterBtn.getAttribute('data-category');
+          this.handleCategoryFilter(categoryId);
+        }
 
-      // Back to categories button
-      const backBtn = event.target.closest('#back-to-categories');
-      if (backBtn) {
-        this.handleBackToCategories();
-      }
+        // Back to categories button
+        const backBtn = event.target.closest('#back-to-categories');
+        if (backBtn) {
+          this.handleBackToCategories();
+        }
 
-      // Item action buttons
-      const viewBtn = event.target.closest('.btn-view');
-      if (viewBtn) {
-        const itemId = viewBtn.getAttribute('data-item-id');
-        this.handleViewItem(itemId);
-      }
+        // Item action buttons
+        const viewBtn = event.target.closest('.btn-view');
+        if (viewBtn) {
+          const itemId = viewBtn.getAttribute('data-item-id');
+          this.handleViewItem(itemId);
+        }
 
-      const downloadBtn = event.target.closest('.btn-download');
-      if (downloadBtn) {
-        const itemId = downloadBtn.getAttribute('data-item-id');
-        this.handleDownloadItem(itemId);
+        const downloadBtn = event.target.closest('.btn-download');
+        if (downloadBtn) {
+          const itemId = downloadBtn.getAttribute('data-item-id');
+          this.handleDownloadItem(itemId);
+        }
       }
     });
 
     // Hover effects for category cards
     document.addEventListener('mouseenter', (event) => {
-      const categoryCard = event.target.closest('.category-card');
-      if (categoryCard) {
-        categoryCard.style.transform = 'translateY(-5px)';
-        categoryCard.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.1)';
+      if (event.target && typeof event.target.closest === 'function') {
+        const categoryCard = event.target.closest('.category-card');
+        if (categoryCard) {
+          categoryCard.style.transform = 'translateY(-5px)';
+          categoryCard.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.1)';
+        }
       }
     }, true);
 
     document.addEventListener('mouseleave', (event) => {
-      const categoryCard = event.target.closest('.category-card');
-      if (categoryCard) {
-        categoryCard.style.transform = 'translateY(0)';
-        categoryCard.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.05)';
+      if (event.target && typeof event.target.closest === 'function') {
+        const categoryCard = event.target.closest('.category-card');
+        if (categoryCard) {
+          categoryCard.style.transform = 'translateY(0)';
+          categoryCard.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.05)';
+        }
       }
     }, true);
 
@@ -129,40 +135,44 @@ class CatalogPresenter {
 
     // Dynamic button hover effects
     document.addEventListener('mouseenter', (event) => {
-      const viewBtn = event.target.closest('.btn-view');
-      if (viewBtn) {
-        viewBtn.style.backgroundColor = '#4a5d29';
-      }
+      if (event.target && typeof event.target.closest === 'function') {
+        const viewBtn = event.target.closest('.btn-view');
+        if (viewBtn) {
+          viewBtn.style.backgroundColor = '#4a5d29';
+        }
 
-      const downloadBtn = event.target.closest('.btn-download');
-      if (downloadBtn) {
-        downloadBtn.style.backgroundColor = '#556B2F';
-        downloadBtn.style.color = 'white';
-      }
+        const downloadBtn = event.target.closest('.btn-download');
+        if (downloadBtn) {
+          downloadBtn.style.backgroundColor = '#556B2F';
+          downloadBtn.style.color = 'white';
+        }
 
-      const backBtn = event.target.closest('#back-to-categories');
-      if (backBtn) {
-        backBtn.style.backgroundColor = '#556B2F';
-        backBtn.style.color = 'white';
+        const backBtn = event.target.closest('#back-to-categories');
+        if (backBtn) {
+          backBtn.style.backgroundColor = '#556B2F';
+          backBtn.style.color = 'white';
+        }
       }
     }, true);
 
     document.addEventListener('mouseleave', (event) => {
-      const viewBtn = event.target.closest('.btn-view');
-      if (viewBtn) {
-        viewBtn.style.backgroundColor = '#556B2F';
-      }
+      if (event.target && typeof event.target.closest === 'function') {
+        const viewBtn = event.target.closest('.btn-view');
+        if (viewBtn) {
+          viewBtn.style.backgroundColor = '#556B2F';
+        }
 
-      const downloadBtn = event.target.closest('.btn-download');
-      if (downloadBtn) {
-        downloadBtn.style.backgroundColor = 'transparent';
-        downloadBtn.style.color = '#556B2F';
-      }
+        const downloadBtn = event.target.closest('.btn-download');
+        if (downloadBtn) {
+          downloadBtn.style.backgroundColor = 'transparent';
+          downloadBtn.style.color = '#556B2F';
+        }
 
-      const backBtn = event.target.closest('#back-to-categories');
-      if (backBtn) {
-        backBtn.style.backgroundColor = 'transparent';
-        backBtn.style.color = '#556B2F';
+        const backBtn = event.target.closest('#back-to-categories');
+        if (backBtn) {
+          backBtn.style.backgroundColor = 'transparent';
+          backBtn.style.color = '#556B2F';
+        }
       }
     }, true);
   }
@@ -183,12 +193,12 @@ class CatalogPresenter {
   handleCategorySelect(categoryId) {
     // Map category ID to narrator name for hadits data
     const narratorMap = {
-      'bukhari': 'bukhari',
-      'muslim': 'muslim',
-      'tirmidzi': 'tirmidzi',
-      'abu-daud': 'abu daud',
-      'an-nasai': 'an-nasa\'i',
-      'ibn-majah': 'ibn majah'
+      'bukhari': 'Bukhari',
+      'muslim': 'Muslim',
+      'tirmidzi': 'Tirmidzi',
+      'abu-daud': 'Abu Daud',
+      'an-nasai': 'Nasai',
+      'ibn-majah': 'Ibnu Majah'
     };
     
     const narrator = narratorMap[categoryId];

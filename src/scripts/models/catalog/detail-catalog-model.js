@@ -23,7 +23,7 @@ class DetailCatalogModel {
     this.currentPage = 1;
     
     const filteredData = this.haditsData.filter(hadits => 
-      hadits.Nama && hadits.Nama.toLowerCase() === narrator.toLowerCase()
+      hadits.Nama && hadits.Nama === narrator
     );
     
     this.totalItems = filteredData.length;
@@ -74,15 +74,15 @@ class DetailCatalogModel {
     if (!this.currentNarrator) return [];
     
     const filteredData = this.haditsData.filter(hadits => {
-      if (hadits.Nama && hadits.Nama.toLowerCase() !== this.currentNarrator.toLowerCase()) {
+      if (hadits.Nama && hadits.Nama !== this.currentNarrator) {
         return false;
       }
       
       const searchFields = [
         hadits.Arab || '',
-        hadits.Indonesia || '',
-        hadits.Kitab || '',
-        hadits.Nomor || ''
+        hadits.Terjemahan || '',
+        hadits.Perawi || '',
+        hadits.id || ''
       ];
       
       return searchFields.some(field => 
@@ -96,15 +96,15 @@ class DetailCatalogModel {
 
   getNarratorDisplayName(narrator) {
     const narratorMap = {
-      'bukhari': 'Imam Bukhari',
-      'muslim': 'Imam Muslim', 
-      'tirmidzi': 'Imam Tirmidzi',
-      'abu daud': 'Imam Abu Daud',
-      'an-nasa\'i': 'Imam An-Nasa\'i',
-      'ibn majah': 'Imam Ibn Majah'
+      'Bukhari': 'Imam Bukhari',
+      'Muslim': 'Imam Muslim', 
+      'Tirmidzi': 'Imam Tirmidzi',
+      'Abu Daud': 'Imam Abu Daud',
+      'Nasai': 'Imam An-Nasa\'i',
+      'Ibnu Majah': 'Imam Ibn Majah'
     };
     
-    return narratorMap[narrator.toLowerCase()] || narrator;
+    return narratorMap[narrator] || narrator;
   }
 }
 

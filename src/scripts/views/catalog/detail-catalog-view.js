@@ -231,12 +231,12 @@ class DetailCatalogView {
               font-size: 1.2rem;
               font-weight: 600;
               margin-bottom: 4px;
-            ">${hadits.Kitab || 'Kitab Hadits'}</h3>
+            ">${hadits.Perawi || 'Hadits'}</h3>
             <p style="
               color: #6c757d;
               font-size: 0.9rem;
               margin: 0;
-            ">Hadits No. ${hadits.Nomor || '-'} • ${hadits.Nama || 'Perawi'}</p>
+            ">ID: ${hadits.id || '-'} • ${hadits.Nama || 'Perawi'}</p>
           </div>
           <div style="
             background: linear-gradient(135deg, #D2B48C 0%, #B8860B 100%);
@@ -280,7 +280,7 @@ class DetailCatalogView {
         ` : ''}
 
         <!-- Indonesian Translation -->
-        ${hadits.Indonesia ? `
+        ${hadits.Terjemahan ? `
           <div style="margin-bottom: 20px;">
             <h4 style="
               color: #2c3e50;
@@ -301,7 +301,7 @@ class DetailCatalogView {
               padding: 20px;
               border-radius: 12px;
               border-left: 3px solid #D2B48C;
-            ">${hadits.Indonesia}</p>
+            ">${hadits.Terjemahan}</p>
           </div>
         ` : ''}
 

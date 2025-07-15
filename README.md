@@ -103,7 +103,23 @@ UsStuck/
    # VITE_GEMINI_API_KEY=your_actual_api_key_here
    ```
 
-4. **Start development server**
+4. **Setup Security Measures (Recommended)**
+   ```bash
+   # For Linux/macOS
+   chmod +x setup-security.sh
+   ./setup-security.sh
+   
+   # For Windows (PowerShell)
+   .\setup-security.ps1
+   ```
+   
+   This will:
+   - Configure git hooks to prevent committing secrets
+   - Setup GitLeaks for secret detection
+   - Verify .env files are properly ignored
+   - Install security best practices
+
+5. **Start development server**
    ```bash
    npm run dev
    ```
@@ -256,6 +272,72 @@ npm run format
 - ✅ `.env` file is ignored by Git (never committed)
 - ✅ Production keys are managed by Netlify
 - ✅ No sensitive data in source code
+
+## 🔒 Security & Best Practices
+
+### 🛡️ API Key Protection
+Our project implements multiple layers of security to protect sensitive information:
+
+#### Environment Variables
+- **Development**: API keys stored in `.env` file (git-ignored)
+- **Production**: Environment variables managed by hosting platform
+- **Never commit**: API keys never appear in source code or git history
+
+#### Automated Security Scanning
+```bash
+# GitLeaks configuration for secret detection
+.gitleaks.toml          # Secret detection rules
+.githooks/pre-commit    # Pre-commit security checks
+setup-security.sh       # Security setup script (Linux/macOS)
+setup-security.ps1      # Security setup script (Windows)
+```
+
+#### Security Features
+- 🔍 **Pre-commit hooks** prevent accidental API key commits
+- 🔍 **GitLeaks integration** for automated secret scanning
+- 🔍 **Pattern matching** for common secret formats
+- 🔍 **Manual validation** as fallback security layer
+
+### 🚨 If API Key Gets Exposed
+
+**Immediate Actions:**
+1. **Revoke the exposed key** at [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. **Generate new API key**
+3. **Update environment variables** in development and production
+4. **Remove from git history** if committed:
+   ```bash
+   git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch .env' --prune-empty --tag-name-filter cat -- --all
+   git push origin --force --all
+   ```
+
+### 🔧 Security Setup
+
+Run the security setup script to configure all protection measures:
+
+```bash
+# Linux/macOS
+./setup-security.sh
+
+# Windows PowerShell
+.\setup-security.ps1
+```
+
+This configures:
+- Git hooks for secret prevention
+- GitLeaks for automated scanning
+- Proper .gitignore settings
+- Security validation checks
+
+### 📋 Security Checklist
+
+- ✅ Environment variables configured
+- ✅ .env file git-ignored
+- ✅ Pre-commit hooks active
+- ✅ GitLeaks configured
+- ✅ No hardcoded secrets
+- ✅ Production environment secured
+- ✅ API key validation implemented
+- ✅ Rate limiting configured
 
 ## 🌐 Deployment
 

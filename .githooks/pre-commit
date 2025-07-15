@@ -1,0 +1,43 @@
+#!/bin/sh
+# Pre-commit hook to prevent committing secrets
+# UsStuck Security Hook
+
+echo "🔍 Checking for secrets before commit..."
+
+# Check if gitleaks is installed
+if ! command -v gitleaks &> /dev/null; then
+    echo "⚠️  GitLeaks not found. Installing..."
+    echo "Please install GitLeaks: https://github.com/zricethezav/gitleaks#installing"
+    echo "Or run: go install github.com/zricethezav/gitleaks/v8@latest"
+    echo "Skipping secret detection for now..."
+else
+    # Run gitleaks on staged files
+    if gitleaks protect --staged --config .gitleaks.toml; then
+        echo "✅ No secrets detected"
+    else
+        echo "❌ SECRETS DETECTED! Commit blocked."
+        echo "Please remove sensitive information before committing."
+        echo "Check the output above for details."
+        exit 1
+    fi
+fi
+
+# Check for common patterns manually as fallback
+echo "🔍 Manual pattern check..."
+
+# Check for Google API keys
+if git diff --cached --name-only | xargs grep -l "AIza[0-9A-Za-z\-_]\{35\}" 2>/dev/null; then
+    echo "❌ Google API Key detected in staged files!"
+    echo "Please remove API keys and use environment variables."
+    exit 1
+fi
+
+# Check for hardcoded secrets in common patterns
+if git diff --cached | grep -E "(api[_-]?key|password|secret|token)\s*[=:]\s*['\"][^'\"\s]{10,}" 2>/dev/null; then
+    echo "❌ Potential secret detected in staged changes!"
+    echo "Please review and use environment variables for sensitive data."
+    exit 1
+fi
+
+echo "✅ Pre-commit security check passed"
+exit 0

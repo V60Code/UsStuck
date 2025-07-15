@@ -39,16 +39,25 @@
 
 ### Step 3: Set Environment Variables
 
-1. **Go to Site Settings**
-2. **Navigate to Environment Variables**
-3. **Add the following variables:**
+⚠️ **PENTING:** Jangan pernah commit API key ke repository!
+
+1. **Get your Gemini API Key:**
+   - Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Create new API key
+   - Copy the generated key
+
+2. **Go to Site Settings** di Netlify
+3. **Navigate to Environment Variables**
+4. **Add the following variables:**
 
    | Variable Name | Value |
    |---------------|-------|
-   | `VITE_GEMINI_API_KEY` | `AIzaSyDZffkSSq4lOWst9LVLrdykVgzoeQSWGK0` |
+   | `VITE_GEMINI_API_KEY` | `YOUR_ACTUAL_API_KEY_HERE` |
    | `VITE_API_BASE_URL` | `https://generativelanguage.googleapis.com/v1/models` |
    | `VITE_APP_NAME` | `UsStuck` |
    | `VITE_APP_VERSION` | `1.0.0` |
+
+   🔒 **Security Note:** API key hanya disimpan di Netlify environment variables, tidak di source code!
 
 ### Step 4: Deploy
 
@@ -102,6 +111,29 @@
 2. **Restart deployment setelah menambah variables**
 3. **Check case sensitivity**
 
+## 🚨 API Key Security & Recovery
+
+### If API Key Gets Exposed
+
+**Immediate Actions:**
+1. **Revoke the exposed key** di [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. **Generate new API key**
+3. **Update Netlify environment variables** dengan key baru
+4. **Trigger new deployment**
+5. **Remove from git history** jika ter-commit:
+   ```bash
+   git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch DEPLOYMENT.md' --prune-empty --tag-name-filter cat -- --all
+   git push origin --force --all
+   ```
+
+### Prevention Measures
+
+- 🔒 **Never commit API keys** to any file
+- 🔒 **Use placeholders** in documentation
+- 🔒 **Enable secret scanning** di GitHub
+- 🔒 **Regular API key rotation**
+- 🔒 **Monitor API usage** untuk aktivitas mencurigakan
+
 ## Security Checklist
 
 - ✅ `.env` file tidak ter-commit ke GitHub
@@ -111,6 +143,8 @@
 - ✅ Environment variables set di Netlify
 - ✅ API key validation implemented
 - ✅ Rate limiting implemented
+- ✅ Documentation uses placeholders only
+- ✅ Secret scanning enabled
 
 ## Monitoring & Maintenance
 

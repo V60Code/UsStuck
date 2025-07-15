@@ -1,0 +1,49 @@
+# GitLeaks Configuration for UsStuck Project
+# Prevents committing sensitive information like API keys
+
+title = "UsStuck Security Configuration"
+
+[[rules]]
+  description = "Google API Key"
+  regex = '''AIza[0-9A-Za-z\-_]{35}'''
+  tags = ["key", "google", "api"]
+
+[[rules]]
+  description = "Generic API Key"
+  regex = '''(?i)(api[_-]?key|apikey)[\s]*[=:][\s]*['"]?[0-9a-zA-Z\-_]{20,}['"]?'''
+  tags = ["key", "api"]
+
+[[rules]]
+  description = "Environment Variable with Secret"
+  regex = '''(?i)(secret|password|token|key)[\s]*[=:][\s]*['"]?[0-9a-zA-Z\-_]{10,}['"]?'''
+  tags = ["secret", "env"]
+
+[[rules]]
+  description = "Hardcoded Password"
+  regex = '''(?i)password[\s]*[=:][\s]*['"]?[^\s'"]{8,}['"]?'''
+  tags = ["password"]
+
+# Allowlist for false positives
+[allowlist]
+  description = "Allowlisted files and patterns"
+  files = [
+    "\.env\.example$",
+    "README\.md$",
+    "\.gitleaks\.toml$"
+  ]
+  regexes = [
+    "YOUR_.*_HERE",
+    "PLACEHOLDER",
+    "EXAMPLE_KEY",
+    "your-api-key"
+  ]
+
+# Paths to ignore
+[allowlist.paths]
+  description = "Ignore certain paths"
+  paths = [
+    "node_modules/",
+    "dist/",
+    ".git/",
+    "*.log"
+  ]

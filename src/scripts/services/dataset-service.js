@@ -15,8 +15,6 @@ class DatasetService {
       // Netlify-friendly paths (files should be in public directory)
       '/hadits.json',
       './hadits.json',
-      '/public/hadits.json',
-      './public/hadits.json',
       
       // Fallback paths for local development
       '/src/public/hadits.json',

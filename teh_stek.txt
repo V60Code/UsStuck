@@ -1,0 +1,32 @@
+# Tech Stack - UsStuck Project
+
+## Tabel Teknologi yang Digunakan
+
+| Komponen | Teknologi yang Digunakan | Alasan Pemilihan |
+|----------|--------------------------|-------------------|
+| **Frontend (UI/UX)** | Vanilla JavaScript (ES6+), HTML5, CSS3 | Performa optimal tanpa overhead framework, kontrol penuh terhadap DOM, bundle size minimal, kompatibilitas browser luas, mudah maintenance untuk tim kecil |
+| **Backend (Logika Server)** | Client-side JavaScript (No traditional backend) | Aplikasi SPA yang berjalan di browser, mengurangi kompleksitas infrastruktur, deployment sederhana, cost-effective untuk MVP, integrasi langsung dengan API eksternal |
+| **Database** | Static JSON File (hadits.json) | Data hadits bersifat read-only, performa akses cepat, tidak memerlukan database server, mudah di-cache browser, deployment sederhana |
+| **AI & Machine Learning** | Google Gemini AI API (gemini-1.5-flash) | Model AI terbaru dengan pemahaman konteks baik, API stabil, mendukung bahasa Indonesia, cost-effective, integrasi mudah dengan JavaScript |
+| **Infrastruktur & Deployment** | Vite 6.2.0 (Build Tool), Netlify (Hosting), Git (Version Control), NPM (Package Manager) | Vite: build tool modern dengan hot reload cepat; Netlify: hosting gratis dengan CDN global; Git: version control standard; NPM: package manager dengan ekosistem luas |
+
+---
+
+## Detail Teknologi Tambahan
+
+### Arsitektur Pattern
+- **Pattern:** Model-View-Presenter (MVP)
+- **Alasan:** Separation of concerns yang jelas, testability yang baik, maintainability untuk aplikasi yang berkembang
+
+### Teknologi Pendukung
+- **ES6 Modules:** Untuk modular code organization
+- **Fetch API:** Untuk HTTP requests ke Gemini AI
+- **Local Storage:** Untuk caching dan session management
+- **CSS Grid/Flexbox:** Untuk responsive layout
+- **Progressive Web App Ready:** Struktur yang mendukung PWA implementation
+
+### Konfigurasi Build
+- **Module Type:** ES Modules
+- **Build Output:** Static files untuk hosting
+- **Asset Handling:** Automatic optimization dan copying
+- **Development Server:** Hot reload dengan Vite dev server

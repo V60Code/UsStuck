@@ -228,24 +228,17 @@ class ForumPresenter {
   handleTopicClick(topicId) {
     const topic = this.model.getTopicById(topicId);
     if (topic) {
-      this.showTopicDetail(topic);
+      // Navigate to detail forum page
+      window.location.hash = `#/forum/detail/${topicId}`;
+    } else {
+      this.showToast('Topik tidak ditemukan');
     }
   }
 
   showTopicDetail(topic) {
-    const detail = `
-      Judul: ${topic.title}
-      Kategori: ${topic.category}
-      Penulis: ${topic.author}
-      Balasan: ${topic.replies}
-      Views: ${topic.views}
-      
-      Isi:
-      ${topic.content}
-      
-      Fitur detail topik dan sistem balasan sedang dalam pengembangan.
-    `;
-    alert(detail);
+    // This method is now deprecated, keeping for backward compatibility
+    // Navigation is handled by handleTopicClick
+    window.location.hash = `#/forum/detail/${topic.id}`;
   }
 
   showToast(message) {

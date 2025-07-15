@@ -4,6 +4,7 @@ import AskAiPage from '../pages/ask-ai/ask-ai-page.js';
 import CatalogPage from '../pages/catalog/catalog-page.js';
 import CatalogDetailPage from '../pages/catalog-detail.js';
 import ForumPage from '../pages/forum/forum-page.js';
+import DetailForumPage from '../pages/forum/detail-forum-page.js';
 import LoginPage from '../pages/login/login-page.js';
 import PrivacyPage from '../pages/privacy/privacy-page.js';
 
@@ -15,6 +16,8 @@ const routes = {
   '/catalog/detail/:id': CatalogDetailPage,
   '/catalog/:id': CatalogDetailPage,
   '/forum': ForumPage,
+  '/forum/detail/:id': DetailForumPage,
+  '/forum/:id': DetailForumPage,
   '/login': LoginPage,
   '/privacy': PrivacyPage,
 };
